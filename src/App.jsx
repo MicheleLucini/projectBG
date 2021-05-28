@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import Background from "./scenes/background";
 import Menu from "./scenes/menu";
 import Pregame from "./scenes/pregame";
+import RegionRoulette from "./scenes/regionRoulette";
 import { GAME_PHASES, LSKEY } from "./logic/constants";
 import "./App.css";
 

@@ -32,7 +32,7 @@ const Pregame = ({ changePhase }) => {
       <Button
         text={"Start"}
         icon="play_arrow"
-        onClick={() => changePhase(GAME_PHASES.LOBBY_PREGAME)}
+        onClick={() => changePhase(GAME_PHASES.REGION_ROULETTE)}
       ></Button>
     </div>
   );
