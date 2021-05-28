@@ -13,21 +13,21 @@ const Pregame = ({ changePhase }) => {
         <span>Player blue (you)</span>
       </div>
       <div className="player red">
-        <span class="icon material-icons-outlined">smart_toy</span>
+        <span className="icon material-icons-outlined">smart_toy</span>
         <span>Player red (bot)</span>
       </div>
       <div className="player green">
-        <span class="icon material-icons-outlined">smart_toy</span>
+        <span className="icon material-icons-outlined">smart_toy</span>
         <span>Player green (bot)</span>
       </div>
       <div className="player yellow">
-        <span class="icon material-icons-outlined">smart_toy</span>
+        <span className="icon material-icons-outlined">smart_toy</span>
         <span>Player yellow (bot)</span>
       </div>
       <Button
         text={"Back"}
         icon="arrow_back"
-        onClick={() => changePhase(null)}
+        onClick={() => changePhase(GAME_PHASES.MENU)}
       ></Button>
       <Button
         text={"Start"}

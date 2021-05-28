@@ -21,9 +21,12 @@ const App = () => {
   return (
     <>
       <Background gamePhase={gamePhase}></Background>
-      {!gamePhase && <Menu changePhase={changePhase}></Menu>}
+      {gamePhase === GAME_PHASES.MENU && <Menu changePhase={changePhase} />}
       {gamePhase === GAME_PHASES.LOBBY_PREGAME && (
-        <Pregame changePhase={changePhase}></Pregame>
+        <Pregame changePhase={changePhase} />
+      )}
+      {gamePhase === GAME_PHASES.REGION_ROULETTE && (
+        <RegionRoulette changePhase={changePhase} />
       )}
     </>
   );

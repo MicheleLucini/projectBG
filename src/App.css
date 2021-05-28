@@ -1,6 +1,18 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: #fafafa;
+  font-family: "Josefin Slab", serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+button {
+  font-family: "Josefin Slab", serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #app {
@@ -11,7 +23,14 @@ body {
   min-height: 100vh;
   width: 100vw;
   /*min-width: 900px;*/
-  font-family: Montserrat;
-  font-size: 14px;
   box-sizing: border-box;
+}
+
+*:not(.selectable) {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
