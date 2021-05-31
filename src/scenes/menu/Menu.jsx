@@ -9,7 +9,7 @@ const Menu = ({ changePhase }) => {
   return (
     <div id="menu">
       <Button
-        text={"Start campaign"}
+        text="Start campaign"
         icon="play_arrow"
         onClick={() => changePhase(GAME_PHASES.LOBBY_PREGAME)}
       ></Button>

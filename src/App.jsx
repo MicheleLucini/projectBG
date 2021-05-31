@@ -10,24 +10,36 @@ const App = () => {
   const [gamePhase, setGamePhase] = useState(
     localStorage.getItem(LSKEY.GAME_PHASE)
   );
-
-  const changePhase = useCallback(
-    (newPhase) => {
-      localStorage.setItem(LSKEY.GAME_PHASE, newPhase);
-      setGamePhase(newPhase);
-    },
-    [setGamePhase]
+  const [gameData, setGameData] = useState(
+    JSON.parse(localStorage.getItem(LSKEY.GAME_DATA))
   );
+
+  const changePhase = useCallback((newPhase) => {
+    localStorage.setItem(LSKEY.GAME_PHASE, newPhase);
+    setGamePhase(newPhase);
+  }, []);
+
+  const changeGameData = useCallback((newGameData) => {
+    console.log({ newGameData });
+    localStorage.setItem(LSKEY.GAME_DATA, JSON.stringify(newGameData));
+    setGameData(newGameData);
+  }, []);
 
   return (
     <>
       <Background gamePhase={gamePhase}></Background>
-      {gamePhase === GAME_PHASES.MENU && <Menu changePhase={changePhase} />}
+      {(gamePhase === null || gamePhase === GAME_PHASES.MENU) && (
+        <Menu changePhase={changePhase} />
+      )}
       {gamePhase === GAME_PHASES.LOBBY_PREGAME && (
-        <Pregame changePhase={changePhase} />
+        <Pregame changePhase={changePhase} changeGameData={changeGameData} />
       )}
       {gamePhase === GAME_PHASES.REGION_ROULETTE && (
-        <RegionRoulette changePhase={changePhase} />
+        <RegionRoulette
+          changePhase={changePhase}
+          gameData={gameData}
+          changeGameData={changeGameData}
+        />
       )}
     </>
   );

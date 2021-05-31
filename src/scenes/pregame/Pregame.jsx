@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
 import Button from "../../components/button";
 import { GAME_PHASES } from "../../logic/constants";
 
 import "./pregame.css";
 
-const Pregame = ({ changePhase }) => {
+const Pregame = ({ changePhase, changeGameData }) => {
+  const startCampaign = useCallback(() => {
+    changeGameData({
+      regions_played: [],
+    });
+    changePhase(GAME_PHASES.REGION_ROULETTE);
+  }, []);
+
   return (
     <div id="pregame">
       <div className="player blue">
@@ -25,21 +32,18 @@ const Pregame = ({ changePhase }) => {
         <span>Player yellow (bot)</span>
       </div>
       <Button
-        text={"Back"}
+        text="Back"
         icon="arrow_back"
         onClick={() => changePhase(GAME_PHASES.MENU)}
       ></Button>
-      <Button
-        text={"Start"}
-        icon="play_arrow"
-        onClick={() => changePhase(GAME_PHASES.REGION_ROULETTE)}
-      ></Button>
+      <Button text="Start" icon="play_arrow" onClick={startCampaign}></Button>
     </div>
   );
 };
 
 Pregame.propTypes = {
   changePhase: PropTypes.func.isRequired,
+  changeGameData: PropTypes.func.isRequired,
 };
 
 Pregame.defaultProps = {};

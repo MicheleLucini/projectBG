@@ -1,11 +1,12 @@
 export const GAME_PHASES = {
-  MENU: "null",
+  MENU: "menu",
   LOBBY_PREGAME: "lobby_pregame",
   REGION_ROULETTE: "region_roulette",
 };
 
 export const LSKEY = {
   GAME_PHASE: "game_phase",
+  GAME_DATA: "game_data",
 };
 
 export const REGIONS = [
