@@ -1,9 +1,14 @@
 import React, { useState, useCallback } from "react";
+
 import Background from "./scenes/background";
 import Menu from "./scenes/menu";
 import Pregame from "./scenes/pregame";
 import RegionRoulette from "./scenes/regionRoulette";
+
+import Cursor from "./components/cursor";
+
 import { GAME_PHASES, LSKEY } from "./logic/constants";
+
 import "./App.css";
 
 const App = () => {
@@ -41,6 +46,7 @@ const App = () => {
           changeGameData={changeGameData}
         />
       )}
+      <Cursor></Cursor>
     </>
   );
 };

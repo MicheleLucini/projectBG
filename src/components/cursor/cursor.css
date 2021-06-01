@@ -1,0 +1,26 @@
+* {
+  cursor: none;
+}
+*:hover {
+  cursor: none;
+}
+
+#cursor {
+  position: fixed;
+  z-index: 99;
+  height: 24px;
+  width: 24px;
+  border-radius: 12px;
+  border-top-left-radius: 1px;
+
+  background-color: #f9fafb;
+  border: 1px solid #b0bec5;
+
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0px 2px 4px -1px rgb(69 90 100 / 20%),
+    0px 4px 5px 0px rgb(69 90 100 / 14%), 0px 1px 10px 0px rgb(69 90 100 / 12%);
+  -webkit-box-shadow: 0 16px 24px 2px rgb(96 125 139 / 14%),
+    0 6px 30px 5px rgb(96 125 139 / 12%), 0 8px 10px -7px rgb(96 125 139 / 20%);
+  box-shadow: 0 16px 24px 2px rgb(96 125 139 / 14%),
+    0 6px 30px 5px rgb(96 125 139 / 12%), 0 8px 10px -7px rgb(96 125 139 / 20%);
+}
