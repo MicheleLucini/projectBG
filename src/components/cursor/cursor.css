@@ -18,7 +18,7 @@
   border-top-left-radius: 1px;
 
   background-color: #f9fafb;
-  border: 1px solid #b0bec5;
+  border: 1px solid rgba(96, 125, 139, 0.2);
 
   box-shadow: 0 16px 19px rgb(166 99 99 / 15%);
 
@@ -31,4 +31,38 @@
 #cursor.hidden .cursor {
   opacity: 0;
   transform: scale(0);
+}
+
+#cursor.down .cursor {
+  -webkit-animation: cursor-down 0.125s cubic-bezier(0.37, 0, 0.63, 1) forwards;
+  animation: cursor-down 0.125s cubic-bezier(0.37, 0, 0.63, 1) forwards;
+}
+
+#cursor.up .cursor {
+  -webkit-animation: cursor-up 0.375s cubic-bezier(0.37, 0, 0.63, 1) forwards;
+  animation: cursor-up 0.375s cubic-bezier(0.37, 0, 0.63, 1) forwards;
+}
+
+@keyframes cursor-down {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.8);
+  }
+}
+
+@keyframes cursor-up {
+  0% {
+    transform: scale(0.8);
+  }
+  33% {
+    transform: scale(1.05);
+  }
+  66% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
