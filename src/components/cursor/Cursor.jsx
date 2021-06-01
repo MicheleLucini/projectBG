@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 
 import "./cursor.css";
 
-const Cursor = ({ hide }) => {
+const Cursor = ({}) => {
+  const [hide, setHide] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const cursorClass = useMemo(
@@ -17,8 +18,13 @@ const Cursor = ({ hide }) => {
     setY(e.y + 1);
   }, []);
 
+  const handleMouseEnter = useCallback(() => setHide(false), []);
+  const handleMouseLeave = useCallback(() => setHide(true), []);
+
   useEffect(() => {
     document.onmousemove = handleMouseMove;
+    document.onmouseenter = handleMouseEnter;
+    document.onmouseleave = handleMouseLeave;
   });
 
   return (
@@ -26,12 +32,8 @@ const Cursor = ({ hide }) => {
   );
 };
 
-Cursor.propTypes = {
-  hide: PropTypes.bool,
-};
+Cursor.propTypes = {};
 
-Cursor.defaultProps = {
-  hide: false,
-};
+Cursor.defaultProps = {};
 
 export default Cursor;
