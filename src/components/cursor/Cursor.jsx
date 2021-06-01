@@ -14,8 +14,8 @@ const Cursor = ({}) => {
 
   const handleMouseMove = useCallback((event) => {
     const e = event || window.event;
-    setX(e.x + 1);
-    setY(e.y + 1);
+    setX(e.x);
+    setY(e.y);
   }, []);
 
   const handleMouseEnter = useCallback(() => setHide(false), []);
@@ -28,7 +28,13 @@ const Cursor = ({}) => {
   });
 
   return (
-    <div id="cursor" className={cursorClass} style={{ top: y, left: x }}></div>
+    <div
+      id="cursor"
+      className={cursorClass}
+      style={{ transform: "translate(" + x + "px, " + y + "px)" }}
+    >
+      <div className="cursor"></div>
+    </div>
   );
 };
 
