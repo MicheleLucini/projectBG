@@ -36,12 +36,18 @@ const Cursor = ({}) => {
     setMouseUp(true);
   }, []);
 
+  const handleContextMenu = useCallback((event) => {
+    event.preventDefault();
+    return false;
+  }, []);
+
   useEffect(() => {
     document.onmousemove = handleMouseMove;
     document.onmouseenter = handleMouseEnter;
     document.onmouseleave = handleMouseLeave;
     document.onmousedown = handleMouseDown;
     document.onmouseup = handleMouseUp;
+    document.oncontextmenu = handleContextMenu;
   });
 
   return (
