@@ -9,6 +9,7 @@ const Cursor = ({}) => {
   const [mouseUp, setMouseUp] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
+
   const cursorClass = useMemo(
     () =>
       [
@@ -26,11 +27,17 @@ const Cursor = ({}) => {
   }, []);
 
   const handleMouseEnter = useCallback(() => setHide(false), []);
-  const handleMouseLeave = useCallback(() => setHide(true), []);
+
+  const handleMouseLeave = useCallback(() => {
+    setMouseUp(false);
+    setHide(true);
+  }, []);
+
   const handleMouseDown = useCallback(() => {
     setMouseUp(false);
     setMouseDown(true);
   }, []);
+
   const handleMouseUp = useCallback(() => {
     setMouseDown(false);
     setMouseUp(true);
@@ -57,6 +64,7 @@ const Cursor = ({}) => {
       style={{ transform: "translate(" + x + "px, " + y + "px)" }}
     >
       <div className="cursor"></div>
+      <div className="text">Need some help?</div>
     </div>
   );
 };

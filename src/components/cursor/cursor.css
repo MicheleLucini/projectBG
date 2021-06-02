@@ -9,9 +9,19 @@
   position: fixed;
   z-index: 99;
   pointer-events: none;
+  display: grid;
+  grid-auto-flow: column;
+  gap: 8px;
 }
 
-.cursor {
+#cursor.hidden > * {
+  opacity: 0 !important;
+  transform: scale(0) !important;
+}
+
+/*************************/
+
+#cursor .cursor {
   height: 24px;
   width: 24px;
   border-radius: 12px;
@@ -26,11 +36,6 @@
   transform: scale(1);
   transform-origin: 0 0;
   transition: opacity 0.2s, transform 0.2s;
-}
-
-#cursor.hidden .cursor {
-  opacity: 0;
-  transform: scale(0);
 }
 
 #cursor.down .cursor {
@@ -65,4 +70,13 @@
   100% {
     transform: scale(1);
   }
+}
+
+/*****************************/
+
+#cursor .text {
+  align-content: center;
+  display: grid;
+  font-size: 16px;
+  font-weight: 600;
 }
