@@ -64,7 +64,7 @@ const Cursor = ({}) => {
       style={{ transform: "translate(" + x + "px, " + y + "px)" }}
     >
       <div className="cursor"></div>
-      <div className="text">Need some help?</div>
+      <div className="text">Wtf is this cursor?</div>
     </div>
   );
 };
