@@ -6,8 +6,9 @@
   justify-content: center;
   align-content: center;
   align-items: center;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 1fr;
   width: 450px;
+  margin: 2rem;
 }
 
 #pregame .player {

@@ -6,6 +6,7 @@ import "./background.css";
 const Background = ({ gamePhase }) => {
   return (
     <div id="bg">
+      <div className="noise"></div>
       {/* <div></div> */}
     </div>
   );
