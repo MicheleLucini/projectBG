@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import "./cursor.css";
 
 const Cursor = ({}) => {
-  const [hide, setHide] = useState(false);
+  const [hide, setHide] = useState(true);
   const [mouseDown, setMouseDown] = useState(false);
   const [mouseUp, setMouseUp] = useState(false);
   const [x, setX] = useState(0);
