@@ -44,6 +44,11 @@
   box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
 }
 
+.simple-button.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
 /* .simple-button:hover {
   box-shadow: 0px 3px 1px -2px rgb(33 150 243 / 20%),
     0px 2px 2px 0px rgb(33 150 243 / 14%), 0px 1px 5px 0px rgb(33 150 243 / 12%);
