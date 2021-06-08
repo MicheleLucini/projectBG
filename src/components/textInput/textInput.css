@@ -1,0 +1,69 @@
+.text-input > input {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+
+  /* height: 64px; */
+  padding: 30px 28px 18px;
+  margin: auto;
+  border-radius: 24px;
+
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 10px;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  vertical-align: middle;
+
+  border: none;
+  outline: none;
+  user-select: none;
+  -webkit-appearance: none;
+  overflow: hidden;
+
+  /* -webkit-transition: box-shadow 0.08s linear,
+    min-width 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.08s linear,
+    min-width 0.15s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+.text-input > input {
+  background-color: #fff;
+  border: 3px solid #eceff1;
+  color: #546e7a;
+  /* box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%); */
+}
+.text-input > input:hover,
+.text-input > input:active {
+  /*box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);*/
+  border-color: #cfd8dc;
+}
+
+.text-input > input:invalid {
+  /*box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);*/
+  border-color: #e57373;
+}
+
+.text-input.active > input {
+  box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
+  border-color: #cfd8dc;
+}
+
+/***************************************/
+
+.text-input > label {
+  position: absolute;
+  z-index: 2;
+  color: #78909c;
+  font-weight: 600;
+  transform: translate(28px, 30px);
+  -webkit-transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.text-input.active > label,
+.text-input.filled > label {
+  transform: translate(24px, 6px) scale(0.7);
+}
