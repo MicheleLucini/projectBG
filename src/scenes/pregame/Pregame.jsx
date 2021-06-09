@@ -1,23 +1,20 @@
-import React, { useCallback } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Button from "../../components/button";
 import { GAME_PHASES } from "../../logic/constants";
 
 import "./pregame.css";
 
-const Pregame = ({ changePhase, changeGameData }) => {
-  const startCampaign = useCallback(() => {
-    changeGameData({
-      regions_played: [],
-    });
-    changePhase(GAME_PHASES.REGION_ROULETTE);
-  }, []);
-
+const Pregame = ({ clientData, changeClientScene }) => {
   return (
     <div id="pregame">
+      <div className="lobby-key">
+        Lobby code:
+        <span className="selectable">{clientData.currentLobbyKey}</span>
+      </div>
       <div className="player blue">
         <span className="icon material-icons-round">face</span>
-        <span>Player blue (you)</span>
+        <span>{clientData.userName + " (you)"}</span>
       </div>
       <div className="player red">
         <span className="icon material-icons-outlined">smart_toy</span>
@@ -34,16 +31,16 @@ const Pregame = ({ changePhase, changeGameData }) => {
       <Button
         text="Back"
         icon="arrow_back"
-        onClick={() => changePhase(GAME_PHASES.MENU)}
+        onClick={() => changeClientScene(GAME_PHASES.MENU)}
       ></Button>
-      <Button text="Start" icon="play_arrow" onClick={startCampaign}></Button>
+      <Button text="Start" icon="play_arrow" onClick={() => {}}></Button>
     </div>
   );
 };
 
 Pregame.propTypes = {
-  changePhase: PropTypes.func.isRequired,
-  changeGameData: PropTypes.func.isRequired,
+  clientData: PropTypes.object.isRequired,
+  changeClientScene: PropTypes.func.isRequired,
 };
 
 Pregame.defaultProps = {};
