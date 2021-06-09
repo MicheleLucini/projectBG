@@ -5,5 +5,9 @@
   align-items: center;
   margin: 2rem;
   align-content: center;
-  gap: 5rem;
+  gap: 2rem;
+}
+
+#menu .text-input {
+  margin-bottom: 3rem;
 }

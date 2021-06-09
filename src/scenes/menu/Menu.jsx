@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import Button from "../../components/button";
 import TextInput from "../../components/textInput";
@@ -6,16 +6,32 @@ import { GAME_PHASES } from "../../logic/constants";
 
 import "./menu.css";
 
-const Menu = ({ changePhase }) => {
-  const [name, setName] = useState("");
+const Menu = ({ userName, changeUserName, changeClientScene }) => {
+  const [name, setName] = useState(userName);
+
+  const onStartCampaign = useCallback(() => {
+    changeUserName(name);
+    changeClientScene(GAME_PHASES.LOBBY_PREGAME);
+  }, [name]);
+
+  const onJoinCampaign = useCallback(() => {
+    changeUserName(name);
+    changeClientScene(GAME_PHASES.JOIN_LOBBY_PREGAME);
+  }, [name]);
 
   return (
     <div id="menu">
       <TextInput label="Name" value={name} setValue={setName} />
       <Button
-        text="Start campaign"
-        icon="play_arrow"
-        onClick={() => changePhase(GAME_PHASES.LOBBY_PREGAME)}
+        text="Create campaign"
+        icon="add"
+        onClick={onStartCampaign}
+        disabled={name.length === 0}
+      ></Button>
+      <Button
+        text="Join campaign"
+        icon="login"
+        onClick={onJoinCampaign}
         disabled={name.length === 0}
       ></Button>
     </div>
@@ -23,7 +39,9 @@ const Menu = ({ changePhase }) => {
 };
 
 Menu.propTypes = {
-  changePhase: PropTypes.func.isRequired,
+  userName: PropTypes.string.isRequired,
+  changeUserName: PropTypes.func.isRequired,
+  changeClientScene: PropTypes.func.isRequired,
 };
 
 Menu.defaultProps = {};
