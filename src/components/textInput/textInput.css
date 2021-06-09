@@ -4,6 +4,7 @@
   text-decoration: none;
 
   /* height: 64px; */
+  width: 100%;
   padding: 30px 28px 18px;
   margin: auto;
   border-radius: 24px;
@@ -41,10 +42,9 @@
   border-color: #cfd8dc;
 }
 
-.text-input > input:invalid {
-  /*box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);*/
+/* .text-input > input:invalid {
   border-color: #e57373;
-}
+} */
 
 .text-input.active > input {
   box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
@@ -58,12 +58,15 @@
   z-index: 2;
   color: #78909c;
   font-weight: 600;
-  transform: translate(28px, 30px);
+  transform: translate(31px, 30px);
+  transform-origin: top left;
   -webkit-transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  will-change: transform;
 }
 
 .text-input.active > label,
 .text-input.filled > label {
-  transform: translate(24px, 6px) scale(0.7);
+  transform: translate(31px, 8px) scale(0.7);
 }

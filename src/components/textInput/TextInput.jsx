@@ -32,7 +32,6 @@ const TextInput = ({ label, value, setValue, placeholder }) => {
         onFocus={onFocus}
         onBlur={onBlur}
         required="required"
-        minLength={1}
       />
       {/* <p>// place for errors</p> */}
     </div>
