@@ -24,10 +24,10 @@
   -webkit-appearance: none;
   overflow: hidden;
 
-  /* -webkit-transition: box-shadow 0.08s linear,
-    min-width 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  transition: box-shadow 0.08s linear,
-    min-width 0.15s cubic-bezier(0.4, 0, 0.2, 1); */
+  -webkit-transition: box-shadow 0.2s linear,
+    border 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.2s linear,
+    border 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .text-input > input {
@@ -47,8 +47,10 @@
 } */
 
 .text-input.active > input {
-  box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
-  border-color: #cfd8dc;
+  /* box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%); */
+  /* border-color: #cfd8dc; */
+  box-shadow: 0px 0px 0px 4px #cfd8dc;
+  border-color: #eceff1;
 }
 
 /***************************************/
