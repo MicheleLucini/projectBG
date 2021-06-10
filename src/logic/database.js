@@ -39,6 +39,7 @@ export const updateGame = (clientData) => {
   if (!clientData.playerId) return;
 
   let myData = {};
+  myData[clientData.playerId + "_deviceId"] = clientData.deviceId;
   myData[clientData.playerId + "_userName"] = clientData.userName;
   myData[clientData.playerId + "_clientScene"] = clientData.clientScene;
   myData[clientData.playerId + "_cursorX"] = clientData.cursor.x;
@@ -51,6 +52,7 @@ export const updateGame = (clientData) => {
 
 export const resetPlayerIdData = (clientData) => {
   let newData = {};
+  newData[clientData.playerId + "_deviceId"] = null;
   newData[clientData.playerId + "_userName"] = null;
   newData[clientData.playerId + "_clientScene"] = null;
   newData[clientData.playerId + "_cursorX"] = null;

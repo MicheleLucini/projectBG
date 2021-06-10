@@ -109,12 +109,19 @@ const App = () => {
 
   const [gameData, setGameData] = useState(null);
 
+  const mergeGameData = useCallback((newValue) => {
+    setGameData((prev) => ({
+      ...prev,
+      ...newValue,
+    }));
+  }, []);
+
   useEffect(() => {
     if (
       clientData.currentLobbyKey !== null &&
       clientData.currentLobbyKey !== ""
     )
-      joinGame(clientData, setGameData);
+      joinGame(clientData, mergeGameData);
   }, [clientData.currentLobbyKey]);
 
   useEffect(() => {
