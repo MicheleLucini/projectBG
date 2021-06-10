@@ -3,44 +3,62 @@ import PropTypes from "prop-types";
 
 import "./cursor.css";
 
-const Cursor = ({}) => {
-  const [hide, setHide] = useState(true);
-  const [mouseDown, setMouseDown] = useState(false);
-  const [mouseUp, setMouseUp] = useState(false);
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
+const Cursor = ({
+  cursorData,
+  changeCursorX,
+  changeCursorY,
+  changeCursorHide,
+  changeCursorUp,
+  changeCursorDown,
+}) => {
+  // const [hide, setHide] = useState(true);
+  // const [mouseDown, setMouseDown] = useState(false);
+  // const [mouseUp, setMouseUp] = useState(false);
+  // const [x, setX] = useState(0);
+  // const [y, setY] = useState(0);
 
   const cursorClass = useMemo(
     () =>
       [
-        hide ? "hidden" : null,
-        mouseDown ? "down" : null,
-        mouseUp ? "up" : null,
+        cursorData.hide ? "hidden" : null,
+        cursorData.mouseDown ? "down" : null,
+        cursorData.mouseUp ? "up" : null,
       ].filter((x) => !!x),
-    [hide, mouseDown, mouseUp]
+    [cursorData.hide, cursorData.mouseDown, cursorData.mouseUp]
   );
 
   const handleMouseMove = useCallback((event) => {
     const e = event || window.event;
-    setX(e.x);
-    setY(e.y);
+    changeCursorX(e.x);
+    changeCursorY(e.y);
+    // setX(e.x);
+    // setY(e.y);
   }, []);
 
-  const handleMouseEnter = useCallback(() => setHide(false), []);
+  const handleMouseEnter = useCallback(() => {
+    changeCursorHide(false);
+    // setHide(false);
+  }, []);
 
   const handleMouseLeave = useCallback(() => {
-    setMouseUp(false);
-    setHide(true);
+    changeCursorUp(false);
+    changeCursorHide(true);
+    // setMouseUp(false);
+    // setHide(true);
   }, []);
 
   const handleMouseDown = useCallback(() => {
-    setMouseUp(false);
-    setMouseDown(true);
+    changeCursorUp(false);
+    changeCursorDown(true);
+    // setMouseUp(false);
+    // setMouseDown(true);
   }, []);
 
   const handleMouseUp = useCallback(() => {
-    setMouseDown(false);
-    setMouseUp(true);
+    changeCursorDown(false);
+    changeCursorUp(true);
+    // setMouseDown(false);
+    // setMouseUp(true);
   }, []);
 
   const handleContextMenu = useCallback((event) => {
@@ -61,15 +79,24 @@ const Cursor = ({}) => {
     <div
       id="cursor"
       className={cursorClass}
-      style={{ transform: "translate(" + x + "px, " + y + "px)" }}
+      style={{
+        transform: "translate(" + cursorData.x + "px, " + cursorData.y + "px)",
+      }}
     >
       <div className="cursor"></div>
-      <div className="text">Wtf is this cursor?</div>
+      <div className="text">{cursorData.text}</div>
     </div>
   );
 };
 
-Cursor.propTypes = {};
+Cursor.propTypes = {
+  cursorData: PropTypes.object.isRequired,
+  changeCursorX: PropTypes.func.isRequired,
+  changeCursorY: PropTypes.func.isRequired,
+  changeCursorUp: PropTypes.func.isRequired,
+  changeCursorDown: PropTypes.func.isRequired,
+  changeCursorHide: PropTypes.func.isRequired,
+};
 
 Cursor.defaultProps = {};
 

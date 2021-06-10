@@ -5,7 +5,7 @@ import { GAME_PHASES, REGIONS } from "../../logic/constants";
 
 import "./regionRoulette.css";
 
-const RegionRoulette = ({ changePhase, gameData, changeGameData }) => {
+const RegionRoulette = ({ changeClientScene, gameData, changeGameData }) => {
   const choosenRegion = useMemo(() => {
     const usedRegions = gameData.regions_played.map((r) => r.id);
     const unusedRegions = Object.keys(REGIONS)
@@ -32,14 +32,14 @@ const RegionRoulette = ({ changePhase, gameData, changeGameData }) => {
       <Button
         text="Continue"
         icon="play_arrow"
-        onClick={() => changePhase(GAME_PHASES.REGION_ROULETTE)}
+        onClick={() => changeClientScene(GAME_PHASES.REGION_ROULETTE)}
       ></Button>
     </div>
   );
 };
 
 RegionRoulette.propTypes = {
-  changePhase: PropTypes.func.isRequired,
+  changeClientScene: PropTypes.func.isRequired,
   changeGameData: PropTypes.func.isRequired,
 };
 

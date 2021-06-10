@@ -36,6 +36,9 @@
   align-items: center;
   font-size: 1.5rem;
   font-weight: 700;
+
+  -webkit-transition: box-shadow 0.08s linear;
+  transition: box-shadow 0.08s linear;
 }
 
 #pregame .player .icon {
@@ -47,20 +50,32 @@
   background-color: #e8f0fe;
   color: #1967d2;
 }
+#pregame .player.blue:hover {
+  box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px #64b5f6;
+}
 
 #pregame .player.red {
   background-color: #fce8e6;
   color: #c5221f;
+}
+#pregame .player.red:hover {
+  box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px #e57373;
 }
 
 #pregame .player.green {
   background-color: #e6f4ea;
   color: #137333;
 }
+#pregame .player.green:hover {
+  box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px #81c784;
+}
 
 #pregame .player.yellow {
   background-color: #fef7e0;
   color: #b05a00;
+}
+#pregame .player.yellow:hover {
+  box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px #ffd54f;
 }
 
 #pregame button {

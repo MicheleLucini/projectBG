@@ -9,12 +9,19 @@ import RegionRoulette from "./scenes/regionRoulette";
 import Cursor from "./components/cursor";
 
 import { GAME_PHASES, LSKEY } from "./logic/constants";
-import { initGun } from "./logic/database";
+import {
+  joinGame,
+  updateGame,
+  leaveGame,
+  resetPlayerIdData,
+} from "./logic/database";
 import { uuidv4, getRandomGameKey } from "./logic/utility";
 
 import "./App.css";
 
 const App = () => {
+  // CLIENT DATA
+
   const [clientData, setClientData] = useState(() => {
     const lsValue = localStorage.getItem(LSKEY.CLIENT_DATA);
     if (lsValue !== null) return JSON.parse(lsValue);
@@ -23,13 +30,23 @@ const App = () => {
       clientScene: GAME_PHASES.MENU,
       userName: "",
       currentLobbyKey: getRandomGameKey(),
+      playerId: null,
+      cursor: {
+        x: 0,
+        y: 0,
+        mouseUp: false,
+        mouseDown: false,
+        hide: true,
+        text: "",
+      },
     };
     localStorage.setItem(LSKEY.CLIENT_DATA, JSON.stringify(defaultValues));
     return defaultValues;
   });
 
   useEffect(() => {
-    console.log("saving: ", { ...clientData });
+    // console.log("saving: ", { ...clientData });
+    updateGame(clientData);
     localStorage.setItem(LSKEY.CLIENT_DATA, JSON.stringify(clientData));
   }, [clientData]);
 
@@ -42,29 +59,67 @@ const App = () => {
   }, []);
 
   const changeCurrentLobbyKey = useCallback((newCurrentLobbyKey) => {
-    setClientData((prev) => ({ ...prev, currentLobbyKey: newCurrentLobbyKey }));
+    setClientData((prev) => {
+      leaveGame(prev.currentLobbyKey);
+      return { ...prev, currentLobbyKey: newCurrentLobbyKey };
+    });
   }, []);
 
-  // const [gameData, setGameData] = useState(
-  //   JSON.parse(localStorage.getItem(LSKEY.GAME_DATA))
-  // );
-  // const gun = initGun();
+  const changePlayerId = useCallback((newPlayerId) => {
+    setClientData((prev) => {
+      resetPlayerIdData(prev);
+      return { ...prev, playerId: newPlayerId };
+    });
+  }, []);
 
-  // const changeGameData = useCallback((newGameData) => {
-  //   console.log({ newGameData });
-  //   localStorage.setItem(LSKEY.GAME_DATA, JSON.stringify(newGameData));
-  //   setGameData(newGameData);
-  // }, []);
+  // CLIENT DATA CURSOR
 
-  // useEffect(() => {
-  //   // window.gun = gun;
-  //   // console.log({ gun });
-  //   if (deviceId === null) {
-  //     const newUUID = ;
-  //     localStorage.setItem(LSKEY.DEVICE_ID, newUUID);
-  //     setDeviceId(newUUID);
-  //   }
-  // }, []);
+  const changeCursorX = useCallback((newValue) => {
+    setClientData((prev) => ({
+      ...prev,
+      cursor: { ...prev.cursor, x: newValue },
+    }));
+  }, []);
+  const changeCursorY = useCallback((newValue) => {
+    setClientData((prev) => ({
+      ...prev,
+      cursor: { ...prev.cursor, y: newValue },
+    }));
+  }, []);
+  const changeCursorUp = useCallback((newValue) => {
+    setClientData((prev) => ({
+      ...prev,
+      cursor: { ...prev.cursor, mouseUp: newValue },
+    }));
+  }, []);
+  const changeCursorDown = useCallback((newValue) => {
+    setClientData((prev) => ({
+      ...prev,
+      cursor: { ...prev.cursor, mouseDown: newValue },
+    }));
+  }, []);
+  const changeCursorHide = useCallback((newValue) => {
+    setClientData((prev) => ({
+      ...prev,
+      cursor: { ...prev.cursor, hide: newValue },
+    }));
+  }, []);
+
+  // GAME DATA
+
+  const [gameData, setGameData] = useState(null);
+
+  useEffect(() => {
+    if (
+      clientData.currentLobbyKey !== null &&
+      clientData.currentLobbyKey !== ""
+    )
+      joinGame(clientData, setGameData);
+  }, [clientData.currentLobbyKey]);
+
+  useEffect(() => {
+    console.log("gameData changed: ", { ...gameData });
+  }, [gameData]);
 
   return (
     <>
@@ -79,6 +134,8 @@ const App = () => {
       {GAME_PHASES.LOBBY_PREGAME === clientData.clientScene && (
         <Pregame
           clientData={clientData}
+          gameData={gameData}
+          changePlayerId={changePlayerId}
           changeClientScene={changeClientScene}
         />
       )}
@@ -91,7 +148,16 @@ const App = () => {
       {GAME_PHASES.REGION_ROULETTE === clientData.clientScene && (
         <RegionRoulette changeClientScene={changeClientScene} />
       )}
-      <Cursor></Cursor>
+      {clientData.cursor && (
+        <Cursor
+          cursorData={clientData.cursor}
+          changeCursorX={changeCursorX}
+          changeCursorY={changeCursorY}
+          changeCursorUp={changeCursorUp}
+          changeCursorDown={changeCursorDown}
+          changeCursorHide={changeCursorHide}
+        ></Cursor>
+      )}
     </>
   );
 };

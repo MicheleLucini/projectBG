@@ -5,28 +5,47 @@ import { GAME_PHASES } from "../../logic/constants";
 
 import "./pregame.css";
 
-const Pregame = ({ clientData, changeClientScene }) => {
+const Pregame = ({
+  clientData,
+  gameData,
+  changePlayerId,
+  changeClientScene,
+}) => {
   return (
     <div id="pregame">
       <div className="lobby-key">
         Lobby code:
         <span className="selectable">{clientData.currentLobbyKey}</span>
       </div>
-      <div className="player blue">
-        <span className="icon material-icons-round">face</span>
-        <span>{clientData.userName + " (you)"}</span>
+      <div className="player blue" onClick={() => changePlayerId("playerBlue")}>
+        <span className="icon material-icons-outlined">
+          {gameData?.playerBlue_userName ? "face" : "smart_toy"}
+        </span>
+        <span>{gameData?.playerBlue_userName || "Empty"}</span>
       </div>
-      <div className="player red">
-        <span className="icon material-icons-outlined">smart_toy</span>
-        <span>Player red (bot)</span>
+      <div className="player red" onClick={() => changePlayerId("playerRed")}>
+        <span className="icon material-icons-outlined">
+          {gameData?.playerRed_userName ? "face" : "smart_toy"}
+        </span>
+        <span>{gameData?.playerRed_userName || "Empty"}</span>
       </div>
-      <div className="player green">
-        <span className="icon material-icons-outlined">smart_toy</span>
-        <span>Player green (bot)</span>
+      <div
+        className="player green"
+        onClick={() => changePlayerId("playerGreen")}
+      >
+        <span className="icon material-icons-outlined">
+          {gameData?.playerGreen_userName ? "face" : "smart_toy"}
+        </span>
+        <span>{gameData?.playerGreen_userName || "Empty"}</span>
       </div>
-      <div className="player yellow">
-        <span className="icon material-icons-outlined">smart_toy</span>
-        <span>Player yellow (bot)</span>
+      <div
+        className="player yellow"
+        onClick={() => changePlayerId("playerYellow")}
+      >
+        <span className="icon material-icons-outlined">
+          {gameData?.playerYellow_userName ? "face" : "smart_toy"}
+        </span>
+        <span>{gameData?.playerYellow_userName || "Empty"}</span>
       </div>
       <Button
         text="Back"
@@ -40,6 +59,8 @@ const Pregame = ({ clientData, changeClientScene }) => {
 
 Pregame.propTypes = {
   clientData: PropTypes.object.isRequired,
+  gameData: PropTypes.object.isRequired,
+  changePlayerId: PropTypes.func.isRequired,
   changeClientScene: PropTypes.func.isRequired,
 };
 
