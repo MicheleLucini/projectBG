@@ -4,7 +4,7 @@ export const CLIENT_SCENES = {
   MENU: "menu",
   LOBBY_PREGAME: "lobby_pregame",
   JOIN_LOBBY_PREGAME: "join_lobby_pregame",
-  IN_GAME: "in_game",
+  CHARACTER_SELECTION: "character_selection",
 };
 
 export const LSKEY = {

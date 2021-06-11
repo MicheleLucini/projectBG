@@ -4,6 +4,7 @@ import Background from "./scenes/background";
 import Menu from "./scenes/menu";
 import Pregame from "./scenes/pregame";
 import JoinPregame from "./scenes/joinPregame";
+import CharacterSelection from "./scenes/characterSelection";
 
 import { Cursor, CursorGhost } from "./components/cursor";
 
@@ -152,6 +153,10 @@ const App = () => {
           changeClientScene={changeClientScene}
         />
       )}
+      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene && (
+        <CharacterSelection changeClientScene={changeClientScene} />
+      )}
+
       {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene && (
         <CursorGhost playerId="playerBlue" gameData={gameData} />
       )}
