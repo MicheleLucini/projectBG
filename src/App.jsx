@@ -4,7 +4,6 @@ import Background from "./scenes/background";
 import Menu from "./scenes/menu";
 import Pregame from "./scenes/pregame";
 import JoinPregame from "./scenes/joinPregame";
-import RegionRoulette from "./scenes/regionRoulette";
 
 import Cursor from "./components/cursor";
 
@@ -153,9 +152,6 @@ const App = () => {
           changeCurrentLobbyKey={changeCurrentLobbyKey}
           changeClientScene={changeClientScene}
         />
-      )}
-      {CLIENT_SCENES.REGION_ROULETTE === clientData.clientScene && (
-        <RegionRoulette changeClientScene={changeClientScene} />
       )}
       {clientData.cursor && (
         <Cursor
