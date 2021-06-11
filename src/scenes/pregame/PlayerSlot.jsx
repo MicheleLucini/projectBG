@@ -4,7 +4,13 @@ import PropTypes from "prop-types";
 import "./pregame.css";
 
 const PlayerSlot = ({ color, playerId, userName, itsAMe, changePlayerId }) => {
-  const cursorClass = useMemo(() => ["player", color], [color]);
+  const customClass = useMemo(
+    () =>
+      ["player", color, userName ? null : "locked"]
+        .filter((x) => !!x)
+        .join(" "),
+    [color, userName]
+  );
 
   const spanText = useMemo(() => {
     if (!userName) return "Player " + color + " (bot)";
@@ -18,7 +24,7 @@ const PlayerSlot = ({ color, playerId, userName, itsAMe, changePlayerId }) => {
   }, [userName, playerId]);
 
   return (
-    <div className={"player " + color} onClick={onClick}>
+    <div className={customClass} onClick={onClick}>
       {userName ? (
         <span className="icon material-icons-round">face</span>
       ) : (

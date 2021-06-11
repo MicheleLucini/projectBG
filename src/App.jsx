@@ -155,6 +155,7 @@ const App = () => {
       )}
       {clientData.cursor && (
         <Cursor
+          playerId={clientData.playerId}
           cursorData={clientData.cursor}
           changeCursorX={changeCursorX}
           changeCursorY={changeCursorY}

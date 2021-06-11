@@ -30,7 +30,7 @@ export const joinGame = (clientData, onChange) => {
     onChange(value);
   }, true);
 
-  resetGame(clientData.currentLobbyKey);
+  // resetGame(clientData.currentLobbyKey);
 
   updateGame(clientData);
 };

@@ -46,6 +46,10 @@
   justify-self: center;
 }
 
+#pregame .player.locked span {
+  opacity: 0.5;
+}
+
 #pregame .player.blue {
   background-color: #e8f0fe;
   color: #1967d2;

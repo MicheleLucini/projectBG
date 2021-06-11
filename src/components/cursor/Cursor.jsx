@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import "./cursor.css";
 
 const Cursor = ({
+  playerId,
   cursorData,
   changeCursorX,
   changeCursorY,
@@ -17,15 +18,33 @@ const Cursor = ({
   // const [x, setX] = useState(0);
   // const [y, setY] = useState(0);
 
-  const cursorClass = useMemo(
-    () =>
-      [
-        cursorData.hide ? "hidden" : null,
-        cursorData.mouseDown ? "down" : null,
-        cursorData.mouseUp ? "up" : null,
-      ].filter((x) => !!x),
-    [cursorData.hide, cursorData.mouseDown, cursorData.mouseUp]
-  );
+  const cursorClass = useMemo(() => {
+    let color = null;
+    switch (playerId) {
+      case "playerBlue":
+        color = "blue";
+        break;
+      case "playerRed":
+        color = "red";
+        break;
+      case "playerGreen":
+        color = "green";
+        break;
+      case "playerYellow":
+        color = "yellow";
+        break;
+      default:
+        break;
+    }
+    return [
+      cursorData.hide ? "hidden" : null,
+      cursorData.mouseDown ? "down" : null,
+      cursorData.mouseUp ? "up" : null,
+      color,
+    ]
+      .filter((x) => !!x)
+      .join(" ");
+  }, [playerId, cursorData.hide, cursorData.mouseDown, cursorData.mouseUp]);
 
   const handleMouseMove = useCallback((event) => {
     const e = event || window.event;
@@ -90,6 +109,7 @@ const Cursor = ({
 };
 
 Cursor.propTypes = {
+  playerId: PropTypes.string,
   cursorData: PropTypes.object.isRequired,
   changeCursorX: PropTypes.func.isRequired,
   changeCursorY: PropTypes.func.isRequired,
@@ -98,6 +118,8 @@ Cursor.propTypes = {
   changeCursorHide: PropTypes.func.isRequired,
 };
 
-Cursor.defaultProps = {};
+Cursor.defaultProps = {
+  playerId: null,
+};
 
 export default Cursor;
