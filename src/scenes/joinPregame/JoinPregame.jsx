@@ -11,6 +11,7 @@ const JoinPregame = ({ changeCurrentLobbyKey, changeClientScene }) => {
   const [lobbyCode, setLobbyCode] = useState("");
 
   const onJoinCampaign = useCallback(() => {
+    if (lobbyCode.length !== 4) return;
     changeCurrentLobbyKey(lobbyCode);
     changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
   }, [lobbyCode]);
@@ -25,6 +26,7 @@ const JoinPregame = ({ changeCurrentLobbyKey, changeClientScene }) => {
         label="Lobby code"
         value={lobbyCode}
         setValue={customSetLobbyCode}
+        onKeyPressEnter={onJoinCampaign}
       />
       <Button
         text="Back"
