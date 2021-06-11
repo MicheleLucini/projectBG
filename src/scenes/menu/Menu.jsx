@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import Button from "../../components/button";
 import TextInput from "../../components/textInput";
-import { GAME_PHASES } from "../../logic/constants";
+import { CLIENT_SCENES } from "../../logic/constants";
 
 import "./menu.css";
 
@@ -11,12 +11,12 @@ const Menu = ({ userName, changeUserName, changeClientScene }) => {
 
   const onStartCampaign = useCallback(() => {
     changeUserName(name);
-    changeClientScene(GAME_PHASES.LOBBY_PREGAME);
+    changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
   }, [name]);
 
   const onJoinCampaign = useCallback(() => {
     changeUserName(name);
-    changeClientScene(GAME_PHASES.JOIN_LOBBY_PREGAME);
+    changeClientScene(CLIENT_SCENES.JOIN_LOBBY_PREGAME);
   }, [name]);
 
   return (

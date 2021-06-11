@@ -8,7 +8,7 @@ import RegionRoulette from "./scenes/regionRoulette";
 
 import Cursor from "./components/cursor";
 
-import { GAME_PHASES, LSKEY } from "./logic/constants";
+import { appVersion, CLIENT_SCENES, LSKEY } from "./logic/constants";
 import {
   joinGame,
   updateGame,
@@ -24,10 +24,12 @@ const App = () => {
 
   const [clientData, setClientData] = useState(() => {
     const lsValue = localStorage.getItem(LSKEY.CLIENT_DATA);
-    if (lsValue !== null) return JSON.parse(lsValue);
+    if (lsValue !== null && lsValue.appVersion === appVersion)
+      return JSON.parse(lsValue);
     const defaultValues = {
+      appVersion: appVersion,
       deviceId: uuidv4(),
-      clientScene: GAME_PHASES.MENU,
+      clientScene: CLIENT_SCENES.MENU,
       userName: "",
       currentLobbyKey: getRandomGameKey(),
       playerId: null,
@@ -131,14 +133,14 @@ const App = () => {
   return (
     <>
       <Background />
-      {GAME_PHASES.MENU === clientData.clientScene && (
+      {CLIENT_SCENES.MENU === clientData.clientScene && (
         <Menu
           userName={clientData.userName}
           changeUserName={changeUserName}
           changeClientScene={changeClientScene}
         />
       )}
-      {GAME_PHASES.LOBBY_PREGAME === clientData.clientScene && (
+      {CLIENT_SCENES.LOBBY_PREGAME === clientData.clientScene && (
         <Pregame
           clientData={clientData}
           gameData={gameData}
@@ -146,13 +148,13 @@ const App = () => {
           changeClientScene={changeClientScene}
         />
       )}
-      {GAME_PHASES.JOIN_LOBBY_PREGAME === clientData.clientScene && (
+      {CLIENT_SCENES.JOIN_LOBBY_PREGAME === clientData.clientScene && (
         <JoinPregame
           changeCurrentLobbyKey={changeCurrentLobbyKey}
           changeClientScene={changeClientScene}
         />
       )}
-      {GAME_PHASES.REGION_ROULETTE === clientData.clientScene && (
+      {CLIENT_SCENES.REGION_ROULETTE === clientData.clientScene && (
         <RegionRoulette changeClientScene={changeClientScene} />
       )}
       {clientData.cursor && (

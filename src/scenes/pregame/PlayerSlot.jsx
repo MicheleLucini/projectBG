@@ -1,7 +1,5 @@
 import React, { useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
-import Button from "../../components/button";
-import { GAME_PHASES } from "../../logic/constants";
 
 import "./pregame.css";
 

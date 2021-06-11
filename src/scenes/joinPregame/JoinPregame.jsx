@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import Button from "../../components/button";
 import TextInput from "../../components/textInput";
-import { GAME_PHASES, LSKEY } from "../../logic/constants";
+import { CLIENT_SCENES, LSKEY } from "../../logic/constants";
 import { joinGame } from "../../logic/database";
 
 import "./joinPregame.css";
@@ -12,7 +12,7 @@ const JoinPregame = ({ changeCurrentLobbyKey, changeClientScene }) => {
 
   const onJoinCampaign = useCallback(() => {
     changeCurrentLobbyKey(lobbyCode);
-    changeClientScene(GAME_PHASES.LOBBY_PREGAME)
+    changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
   }, [lobbyCode]);
 
   const customSetLobbyCode = useCallback((value) => {
@@ -29,7 +29,7 @@ const JoinPregame = ({ changeCurrentLobbyKey, changeClientScene }) => {
       <Button
         text="Back"
         icon="arrow_back"
-        onClick={() => changeClientScene(GAME_PHASES.MENU)}
+        onClick={() => changeClientScene(CLIENT_SCENES.MENU)}
       ></Button>
       <Button
         text="Join campaign"

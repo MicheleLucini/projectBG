@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "../../components/button";
 import PlayerSlot from "./PlayerSlot";
-import { GAME_PHASES } from "../../logic/constants";
+import { CLIENT_SCENES } from "../../logic/constants";
 
 import "./pregame.css";
 
@@ -49,7 +49,7 @@ const Pregame = ({
       <Button
         text="Back"
         icon="arrow_back"
-        onClick={() => changeClientScene(GAME_PHASES.MENU)}
+        onClick={() => changeClientScene(CLIENT_SCENES.MENU)}
       ></Button>
       <Button text="Start" icon="play_arrow" onClick={() => {}}></Button>
     </div>
