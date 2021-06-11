@@ -18,33 +18,38 @@ const Cursor = ({
   // const [x, setX] = useState(0);
   // const [y, setY] = useState(0);
 
-  const cursorClass = useMemo(() => {
-    let color = null;
+  const cursorColor = useMemo(() => {
     switch (playerId) {
       case "playerBlue":
-        color = "blue";
+        return "blue";
         break;
       case "playerRed":
-        color = "red";
+        return "red";
         break;
       case "playerGreen":
-        color = "green";
+        return "green";
         break;
       case "playerYellow":
-        color = "yellow";
+        return "yellow";
         break;
       default:
+        return null;
         break;
     }
-    return [
-      cursorData.hide ? "hidden" : null,
-      cursorData.mouseDown ? "down" : null,
-      cursorData.mouseUp ? "up" : null,
-      color,
-    ]
-      .filter((x) => !!x)
-      .join(" ");
-  }, [playerId, cursorData.hide, cursorData.mouseDown, cursorData.mouseUp]);
+  }, [playerId]);
+
+  const cursorClass = useMemo(
+    () =>
+      [
+        cursorData.hide ? "hidden" : null,
+        cursorData.mouseDown ? "down" : null,
+        cursorData.mouseUp ? "up" : null,
+        cursorColor,
+      ]
+        .filter((x) => !!x)
+        .join(" "),
+    [cursorColor, cursorData.hide, cursorData.mouseDown, cursorData.mouseUp]
+  );
 
   const handleMouseMove = useCallback((event) => {
     const e = event || window.event;

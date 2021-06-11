@@ -1,3 +1,4 @@
 import Cursor from "./Cursor";
+import CursorGhost from "./CursorGhost";
 
-export default Cursor;
+export { Cursor, CursorGhost };

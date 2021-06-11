@@ -5,7 +5,7 @@ import Menu from "./scenes/menu";
 import Pregame from "./scenes/pregame";
 import JoinPregame from "./scenes/joinPregame";
 
-import Cursor from "./components/cursor";
+import { Cursor, CursorGhost } from "./components/cursor";
 
 import { appVersion, CLIENT_SCENES, LSKEY } from "./logic/constants";
 import {
@@ -22,9 +22,8 @@ const App = () => {
   // CLIENT DATA
 
   const [clientData, setClientData] = useState(() => {
-    const lsValue = localStorage.getItem(LSKEY.CLIENT_DATA);
-    if (lsValue !== null && lsValue.appVersion === appVersion)
-      return JSON.parse(lsValue);
+    const lsValue = JSON.parse(localStorage.getItem(LSKEY.CLIENT_DATA));
+    if (lsValue?.appVersion === appVersion) return lsValue;
     const defaultValues = {
       appVersion: appVersion,
       deviceId: uuidv4(),
@@ -153,6 +152,18 @@ const App = () => {
           changeClientScene={changeClientScene}
         />
       )}
+      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene && (
+        <CursorGhost playerId="playerBlue" gameData={gameData} />
+      )}
+      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene && (
+        <CursorGhost playerId="playerRed" gameData={gameData} />
+      )}
+      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene && (
+        <CursorGhost playerId="playerGreen" gameData={gameData} />
+      )}
+      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene && (
+        <CursorGhost playerId="playerYellow" gameData={gameData} />
+      )}
       {clientData.cursor && (
         <Cursor
           playerId={clientData.playerId}
@@ -162,7 +173,7 @@ const App = () => {
           changeCursorUp={changeCursorUp}
           changeCursorDown={changeCursorDown}
           changeCursorHide={changeCursorHide}
-        ></Cursor>
+        />
       )}
     </>
   );
