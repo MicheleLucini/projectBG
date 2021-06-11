@@ -28,7 +28,11 @@ const CursorGhost = ({ playerId, gameData }) => {
 
   const cursorClass = useMemo(
     () =>
-      [gameData[playerId + "_cursorHide"] ? "hidden" : null, cursorColor]
+      [
+        "cursor",
+        gameData[playerId + "_cursorHide"] ? "hidden" : null,
+        cursorColor,
+      ]
         .filter((x) => !!x)
         .join(" "),
     [cursorColor, gameData[playerId + "_cursorHide"]]
@@ -46,7 +50,7 @@ const CursorGhost = ({ playerId, gameData }) => {
           "px)",
       }}
     >
-      <div className="cursor"></div>
+      <div className="goccia"></div>
       <div className="text">{gameData[playerId + "_cursorText"]}</div>
     </div>
   );

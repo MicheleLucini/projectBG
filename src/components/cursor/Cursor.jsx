@@ -41,6 +41,7 @@ const Cursor = ({
   const cursorClass = useMemo(
     () =>
       [
+        "cursor",
         cursorData.hide ? "hidden" : null,
         cursorData.mouseDown ? "down" : null,
         cursorData.mouseUp ? "up" : null,
@@ -101,13 +102,12 @@ const Cursor = ({
 
   return (
     <div
-      id="cursor"
       className={cursorClass}
       style={{
         transform: "translate(" + cursorData.x + "px, " + cursorData.y + "px)",
       }}
     >
-      <div className="cursor"></div>
+      <div className="goccia"></div>
       <div className="text">{cursorData.text}</div>
     </div>
   );

@@ -5,7 +5,7 @@
   cursor: none;
 }
 
-#cursor {
+.cursor {
   position: fixed;
   z-index: 99;
   pointer-events: none;
@@ -14,14 +14,14 @@
   gap: 8px;
 }
 
-#cursor.hidden > * {
+.cursor.hidden > * {
   opacity: 0 !important;
   transform: scale(0) !important;
 }
 
 /*************************/
 
-#cursor .cursor {
+.cursor .goccia {
   height: 24px;
   width: 24px;
   border-radius: 12px;
@@ -38,12 +38,12 @@
   transition: opacity 0.2s, transform 0.2s;
 }
 
-#cursor.down .cursor {
+.cursor.down .goccia {
   -webkit-animation: cursor-down 0.125s cubic-bezier(0.37, 0, 0.63, 1) forwards;
   animation: cursor-down 0.125s cubic-bezier(0.37, 0, 0.63, 1) forwards;
 }
 
-#cursor.up .cursor {
+.cursor.up .goccia {
   -webkit-animation: cursor-up 0.375s cubic-bezier(0.37, 0, 0.63, 1) forwards;
   animation: cursor-up 0.375s cubic-bezier(0.37, 0, 0.63, 1) forwards;
 }
@@ -74,7 +74,7 @@
 
 /*****************************/
 
-#cursor .text {
+.cursor .text {
   align-content: center;
   display: grid;
   font-size: 16px;
@@ -84,15 +84,15 @@
 
 /*****************************/
 
-#cursor.blue .cursor {
+.cursor.blue .goccia {
   border-color: #82b1ff;
 }
-#cursor.red .cursor {
+.cursor.red .goccia {
   border-color: #ff8a80;
 }
-#cursor.green .cursor {
+.cursor.green .goccia {
   border-color: #69f0ae;
 }
-#cursor.yellow .cursor {
+.cursor.yellow .goccia {
   border-color: #ffe57f;
 }
