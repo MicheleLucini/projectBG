@@ -38,11 +38,13 @@ const PlayerSlot = ({ color, playerId, userName, itsAMe, changePlayerId }) => {
 PlayerSlot.propTypes = {
   color: PropTypes.oneOf(["blue", "red", "green", "yellow"]).isRequired,
   playerId: PropTypes.string.isRequired,
-  userName: PropTypes.string.isRequired,
+  userName: PropTypes.string,
   itsAMe: PropTypes.bool.isRequired,
   changePlayerId: PropTypes.func.isRequired,
 };
 
-PlayerSlot.defaultProps = {};
+PlayerSlot.defaultProps = {
+  userName: null,
+};
 
 export default PlayerSlot;

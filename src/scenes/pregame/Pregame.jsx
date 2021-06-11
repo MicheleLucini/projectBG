@@ -50,23 +50,25 @@ const Pregame = ({
         text="Back"
         icon="arrow_back"
         onClick={() => changeClientScene(CLIENT_SCENES.MENU)}
-      ></Button>
+      />
       <Button
         text="Start"
         icon="play_arrow"
         onClick={() => changeClientScene(CLIENT_SCENES.CHARACTER_SELECTION)}
-      ></Button>
+      />
     </div>
   );
 };
 
 Pregame.propTypes = {
   clientData: PropTypes.object.isRequired,
-  gameData: PropTypes.object.isRequired,
+  gameData: PropTypes.object,
   changePlayerId: PropTypes.func.isRequired,
   changeClientScene: PropTypes.func.isRequired,
 };
 
-Pregame.defaultProps = {};
+Pregame.defaultProps = {
+  gameData: null,
+};
 
 export default Pregame;

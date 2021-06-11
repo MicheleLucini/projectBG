@@ -157,18 +157,22 @@ const App = () => {
         <CharacterSelection changeClientScene={changeClientScene} />
       )}
 
-      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene && (
-        <CursorGhost playerId="playerBlue" gameData={gameData} />
-      )}
-      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene && (
-        <CursorGhost playerId="playerRed" gameData={gameData} />
-      )}
-      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene && (
-        <CursorGhost playerId="playerGreen" gameData={gameData} />
-      )}
-      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene && (
-        <CursorGhost playerId="playerYellow" gameData={gameData} />
-      )}
+      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene &&
+        clientData.playerId !== "playerBlue" && (
+          <CursorGhost playerId="playerBlue" gameData={gameData} />
+        )}
+      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene &&
+        clientData.playerId !== "playerRed" && (
+          <CursorGhost playerId="playerRed" gameData={gameData} />
+        )}
+      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene &&
+        clientData.playerId !== "playerGreen" && (
+          <CursorGhost playerId="playerGreen" gameData={gameData} />
+        )}
+      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene &&
+        clientData.playerId !== "playerYellow" && (
+          <CursorGhost playerId="playerYellow" gameData={gameData} />
+        )}
       {clientData.cursor && (
         <Cursor
           playerId={clientData.playerId}

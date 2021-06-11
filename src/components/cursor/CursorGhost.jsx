@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import "./cursor.css";
 
 const CursorGhost = ({ playerId, gameData }) => {
-  if (!gameData || !gameData[playerId + "_userName"]) return;
+  if (!gameData || !gameData[playerId + "_userName"]) return null;
 
   const cursorColor = useMemo(() => {
     switch (playerId) {
