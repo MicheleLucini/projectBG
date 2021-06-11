@@ -78,13 +78,13 @@ const App = () => {
   const changeCursorX = useCallback((newValue) => {
     setClientData((prev) => ({
       ...prev,
-      cursor: { ...prev.cursor, x: newValue },
+      cursor: { ...prev.cursor, x: newValue, hide: false },
     }));
   }, []);
   const changeCursorY = useCallback((newValue) => {
     setClientData((prev) => ({
       ...prev,
-      cursor: { ...prev.cursor, y: newValue },
+      cursor: { ...prev.cursor, y: newValue, hide: false },
     }));
   }, []);
   const changeCursorUp = useCallback((newValue) => {
