@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import "./pregame.css";
 
-const PlayerSlot = ({ color, playerId, userName, itsAMe, changePlayerId }) => {
+const PlayerSlot = ({ color, userName, itsAMe, onSelectPlayer }) => {
   const customClass = useMemo(
     () =>
       ["player", color, userName ? null : "locked"]
@@ -18,13 +18,8 @@ const PlayerSlot = ({ color, playerId, userName, itsAMe, changePlayerId }) => {
     return userName;
   }, [userName, color, itsAMe]);
 
-  const onClick = useCallback(() => {
-    if (userName) return;
-    changePlayerId(playerId);
-  }, [userName, playerId]);
-
   return (
-    <div className={customClass} onClick={onClick}>
+    <div className={customClass} onClick={onSelectPlayer}>
       {userName ? (
         <span className="icon material-icons-round">face</span>
       ) : (
@@ -37,10 +32,9 @@ const PlayerSlot = ({ color, playerId, userName, itsAMe, changePlayerId }) => {
 
 PlayerSlot.propTypes = {
   color: PropTypes.oneOf(["blue", "red", "green", "yellow"]).isRequired,
-  playerId: PropTypes.string.isRequired,
   userName: PropTypes.string,
   itsAMe: PropTypes.bool.isRequired,
-  changePlayerId: PropTypes.func.isRequired,
+  onSelectPlayer: PropTypes.func.isRequired,
 };
 
 PlayerSlot.defaultProps = {

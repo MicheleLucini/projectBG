@@ -9,18 +9,13 @@ import CharacterSelection from "./scenes/characterSelection";
 import { Cursor, CursorGhost } from "./components/cursor";
 
 import { appVersion, CLIENT_SCENES, LSKEY } from "./logic/constants";
-import {
-  joinGame,
-  updateGame,
-  leaveGame,
-  resetPlayerIdData,
-} from "./logic/database";
-import { uuidv4, getRandomGameKey } from "./logic/utility";
+import { updateMyPlayer } from "./logic/database";
+import { uuidv4 } from "./logic/utility";
 
 import "./App.css";
 
 const App = () => {
-  // CLIENT DATA
+  // CLIENT DATA ##########################################
 
   const [clientData, setClientData] = useState(() => {
     const lsValue = JSON.parse(localStorage.getItem(LSKEY.CLIENT_DATA));
@@ -30,7 +25,7 @@ const App = () => {
       deviceId: uuidv4(),
       clientScene: CLIENT_SCENES.MENU,
       userName: "",
-      currentLobbyKey: getRandomGameKey(),
+      currentLobbyKey: null,
       playerId: null,
       cursor: {
         x: 0,
@@ -46,8 +41,7 @@ const App = () => {
   });
 
   useEffect(() => {
-    // console.log("saving: ", { ...clientData });
-    updateGame(clientData);
+    updateMyPlayer(clientData);
     localStorage.setItem(LSKEY.CLIENT_DATA, JSON.stringify(clientData));
   }, [clientData]);
 
@@ -60,20 +54,14 @@ const App = () => {
   }, []);
 
   const changeCurrentLobbyKey = useCallback((newCurrentLobbyKey) => {
-    setClientData((prev) => {
-      leaveGame(prev.currentLobbyKey);
-      return { ...prev, currentLobbyKey: newCurrentLobbyKey };
-    });
+    setClientData((prev) => ({ ...prev, currentLobbyKey: newCurrentLobbyKey }));
   }, []);
 
   const changePlayerId = useCallback((newPlayerId) => {
-    setClientData((prev) => {
-      resetPlayerIdData(prev);
-      return { ...prev, playerId: newPlayerId };
-    });
+    setClientData((prev) => ({ ...prev, playerId: newPlayerId }));
   }, []);
 
-  // CLIENT DATA CURSOR
+  // CLIENT DATA CURSOR ##########################################
 
   const changeCursorX = useCallback((newValue) => {
     setClientData((prev) => ({
@@ -106,7 +94,7 @@ const App = () => {
     }));
   }, []);
 
-  // GAME DATA
+  // GAME DATA ##########################################
 
   const [gameData, setGameData] = useState(null);
 
@@ -117,13 +105,7 @@ const App = () => {
     }));
   }, []);
 
-  useEffect(() => {
-    if (
-      clientData.currentLobbyKey !== null &&
-      clientData.currentLobbyKey !== ""
-    )
-      joinGame(clientData, mergeGameData);
-  }, [clientData.currentLobbyKey]);
+  // EFFETTI ##########################################
 
   useEffect(() => {
     console.log("gameData changed: ", { ...gameData });
@@ -134,9 +116,11 @@ const App = () => {
       <Background />
       {CLIENT_SCENES.MENU === clientData.clientScene && (
         <Menu
-          userName={clientData.userName}
+          clientData={clientData}
           changeUserName={changeUserName}
+          changeCurrentLobbyKey={changeCurrentLobbyKey}
           changeClientScene={changeClientScene}
+          mergeGameData={mergeGameData}
         />
       )}
       {CLIENT_SCENES.LOBBY_PREGAME === clientData.clientScene && (
@@ -149,8 +133,10 @@ const App = () => {
       )}
       {CLIENT_SCENES.JOIN_LOBBY_PREGAME === clientData.clientScene && (
         <JoinPregame
+          clientData={clientData}
           changeCurrentLobbyKey={changeCurrentLobbyKey}
           changeClientScene={changeClientScene}
+          mergeGameData={mergeGameData}
         />
       )}
       {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene && (

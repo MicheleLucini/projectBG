@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PropTypes from "prop-types";
+
 import Button from "../../components/button";
 import PlayerSlot from "./PlayerSlot";
+
+import { resetMyPlayer } from "../../logic/database";
 import { CLIENT_SCENES } from "../../logic/constants";
 
 import "./pregame.css";
@@ -12,6 +15,18 @@ const Pregame = ({
   changePlayerId,
   changeClientScene,
 }) => {
+  const onSelectPlayerSlot = useCallback(
+    (playerId) => {
+      // Se non è già occupato
+      if (gameData[playerId + "_deviceId"]) return;
+      // Libero il posto
+      resetMyPlayer(clientData);
+      // Occupo il nuovo
+      changePlayerId(playerId);
+    },
+    [clientData]
+  );
+
   return (
     <div id="pregame">
       <div className="lobby-key">
@@ -20,31 +35,27 @@ const Pregame = ({
       </div>
       <PlayerSlot
         color="blue"
-        playerId="playerBlue"
         userName={gameData?.playerBlue_userName}
         itsAMe={gameData?.playerBlue_deviceId === clientData.deviceId}
-        changePlayerId={changePlayerId}
+        onSelectPlayer={() => onSelectPlayerSlot("playerBlue")}
       />
       <PlayerSlot
         color="red"
-        playerId="playerRed"
         userName={gameData?.playerRed_userName}
         itsAMe={gameData?.playerRed_deviceId === clientData.deviceId}
-        changePlayerId={changePlayerId}
+        onSelectPlayer={() => onSelectPlayerSlot("playerRed")}
       />
       <PlayerSlot
         color="green"
-        playerId="playerGreen"
         userName={gameData?.playerGreen_userName}
         itsAMe={gameData?.playerGreen_deviceId === clientData.deviceId}
-        changePlayerId={changePlayerId}
+        onSelectPlayer={() => onSelectPlayerSlot("playerGreen")}
       />
       <PlayerSlot
         color="yellow"
-        playerId="playerYellow"
         userName={gameData?.playerYellow_userName}
         itsAMe={gameData?.playerYellow_deviceId === clientData.deviceId}
-        changePlayerId={changePlayerId}
+        onSelectPlayer={() => onSelectPlayerSlot("playerYellow")}
       />
       <Button
         text="Back"

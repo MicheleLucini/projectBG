@@ -1,42 +1,106 @@
 import Gun from "gun";
 import { getRandomGameKey } from "./utility";
+import { appVersion } from "./constants";
 
 const G = Gun(["https://project-bg.herokuapp.com/gun"]);
+let connected = false;
 
-const resetGame = (key) => {
-  G.get(key).put(null);
+/* Base game ops */
+
+export const createGame = (clientData) => {
+  const newGame = {
+    key: getRandomGameKey(),
+    appVersion: appVersion,
+    creatorDeviceId: clientData.deviceId,
+  };
+
+  G.get(newGame.key).put(newGame, (ack) => console.log("created game: ", ack));
+
+  return newGame;
 };
 
-// export const saveGame = (game) => {
-//   G.get(game.key).put(game, (ack) => {
-//     // console.log("game saved:", ack);
-//   });
-// };
+const deleteGame = (key) => {
+  G.get(key).put({ key: null });
+};
 
-// export const createGame = (gamePhase) => {
-//   const gameObj = {
-//     key: getRandomGameKey(),
-//     gamePhase,
-//   };
-//   saveGame(G, gameObj);
-// };
+const downloadGame = (key, onChange) => {
+  G.get(key).once((requestedGame) => {
+    console.log("game downloaded: ", requestedGame);
+    onChange(requestedGame);
+  });
+};
 
-export const joinGame = (clientData, onChange) => {
-  G.get(clientData.currentLobbyKey).on((value, key, _msg, _ev) => {
+const subscribeGame = (key, onChange) => {
+  G.get(key).on((value, key, _msg, _ev) => {
     // console.log({ value });
     // console.log({ key });
     // console.log({ _msg });
     // console.log({ _ev });
     onChange(value);
   }, true);
-
-  // resetGame(clientData.currentLobbyKey);
-
-  updateGame(clientData);
 };
 
-export const updateGame = (clientData) => {
-  if (!clientData.playerId) return;
+const ifExistGame = (key, fnTrue, fnFalse) => {
+  G.get(key).once((requestedGame) => {
+    if (requestedGame && requestedGame.key) {
+      console.log("the game " + requestedGame.key + " exists", requestedGame);
+      fnTrue();
+    } else {
+      console.error(
+        "The game " + requestedGame.key + " doesn't exists.",
+        requestedGame
+      );
+      fnFalse();
+    }
+  });
+};
+
+const ifIsMyGame = (key, clientData, fnTrue) => {
+  G.get(key).once((requestedGame) => {
+    if (
+      requestedGame &&
+      requestedGame.creatorDeviceId === clientData.deviceId
+    ) {
+      console.log("the game " + requestedGame.key + " is mine", requestedGame);
+      fnTrue();
+    }
+  });
+};
+
+/* Complex game ops */
+
+export const joinGame = (key, clientData, onChange, fnJoined) => {
+  console.log("connected? ", connected);
+  if (connected) leaveGame(connected, clientData);
+  console.log("key? ", key);
+  if (!key || key.length !== 4) return false;
+  ifExistGame(
+    key,
+    () => {
+      // exist
+      downloadGame(key, onChange);
+      subscribeGame(key, onChange);
+      connected = key;
+      fnJoined();
+    },
+    () => {
+      // does not
+    }
+  );
+};
+
+export const leaveGame = (key, clientData) => {
+  if (!key) return;
+  G.get(key).off();
+  connected = null;
+  // Se il game è il mio lo elimino
+  ifIsMyGame(key, clientData, () => deleteGame(key));
+};
+
+/* Gestione player */
+
+export const updateMyPlayer = (clientData) => {
+  if (!connected || !clientData.playerId) return;
 
   let myData = {};
   myData[clientData.playerId + "_deviceId"] = clientData.deviceId;
@@ -47,10 +111,12 @@ export const updateGame = (clientData) => {
   myData[clientData.playerId + "_cursorHide"] = clientData.cursor.hide;
   myData[clientData.playerId + "_cursorText"] = clientData.cursor.text;
 
-  G.get(clientData.currentLobbyKey).put(myData, (ack) => {});
+  G.get(connected).put(myData);
 };
 
-export const resetPlayerIdData = (clientData) => {
+export const resetMyPlayer = (clientData) => {
+  if (!connected || !clientData.playerId) return;
+
   let newData = {};
   newData[clientData.playerId + "_deviceId"] = null;
   newData[clientData.playerId + "_userName"] = null;
@@ -59,9 +125,6 @@ export const resetPlayerIdData = (clientData) => {
   newData[clientData.playerId + "_cursorY"] = null;
   newData[clientData.playerId + "_cursorHide"] = null;
   newData[clientData.playerId + "_cursorText"] = null;
-  G.get(clientData.currentLobbyKey).put(newData, (ack) => {});
-};
 
-export const leaveGame = (key) => {
-  G.get(key).off();
+  G.get(connected).put(newData);
 };
