@@ -19,7 +19,8 @@ const App = () => {
 
   const [clientData, setClientData] = useState(() => {
     const lsValue = JSON.parse(localStorage.getItem(LSKEY.CLIENT_DATA));
-    if (lsValue?.appVersion === appVersion) return lsValue;
+    if (lsValue?.appVersion === appVersion)
+      return { ...lsValue, clientScene: CLIENT_SCENES.MENU };
     const defaultValues = {
       appVersion: appVersion,
       deviceId: uuidv4(),

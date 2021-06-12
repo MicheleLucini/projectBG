@@ -1,6 +1,6 @@
 import Gun from "gun";
 import { getRandomGameKey } from "./utility";
-import { appVersion } from "./constants";
+import { appVersion, CLIENT_SCENES } from "./constants";
 
 const G = Gun(["https://project-bg.herokuapp.com/gun"]);
 let connected = false;
@@ -106,10 +106,13 @@ export const updateMyPlayer = (clientData) => {
   myData[clientData.playerId + "_deviceId"] = clientData.deviceId;
   myData[clientData.playerId + "_userName"] = clientData.userName;
   myData[clientData.playerId + "_clientScene"] = clientData.clientScene;
-  myData[clientData.playerId + "_cursorX"] = clientData.cursor.x;
-  myData[clientData.playerId + "_cursorY"] = clientData.cursor.y;
-  myData[clientData.playerId + "_cursorHide"] = clientData.cursor.hide;
-  myData[clientData.playerId + "_cursorText"] = clientData.cursor.text;
+
+  if (clientData.clientScene === CLIENT_SCENES.CHARACTER_SELECTION) {
+    myData[clientData.playerId + "_cursorX"] = clientData.cursor.x;
+    myData[clientData.playerId + "_cursorY"] = clientData.cursor.y;
+    myData[clientData.playerId + "_cursorHide"] = clientData.cursor.hide;
+    myData[clientData.playerId + "_cursorText"] = clientData.cursor.text;
+  }
 
   G.get(connected).put(myData);
 };
