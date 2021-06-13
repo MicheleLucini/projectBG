@@ -19,8 +19,12 @@ const App = () => {
 
   const [clientData, setClientData] = useState(() => {
     const lsValue = JSON.parse(localStorage.getItem(LSKEY.CLIENT_DATA));
-    if (lsValue?.appVersion === appVersion)
+
+    // Se ho i dati e la versione è uguale uso quelli pulendo solo la scene corrente
+    if (lsValue.appVersion === appVersion) {
       return { ...lsValue, clientScene: CLIENT_SCENES.MENU };
+    }
+
     const defaultValues = {
       appVersion: appVersion,
       deviceId: uuidv4(),
@@ -37,7 +41,16 @@ const App = () => {
         text: "",
       },
     };
-    localStorage.setItem(LSKEY.CLIENT_DATA, JSON.stringify(defaultValues));
+
+    // Se ho i dati, la versione è diversa e ho il vecchio device id pulisco tutto mantenendo quello e lo user name
+    if (lsValue?.appVersion !== appVersion && !!lsValue.deviceId) {
+      return {
+        ...defaultValues,
+        deviceId: lsValue.deviceId,
+        userName: lsValue.userName,
+      };
+    }
+
     return defaultValues;
   });
 
