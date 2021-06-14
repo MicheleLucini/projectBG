@@ -14,7 +14,7 @@ export const createGame = (clientData) => {
     creatorDeviceId: clientData.deviceId,
   };
 
-  G.get(newGame.key).put(newGame, (ack) => console.log("created game: ", ack));
+  G.get(newGame.key).put(newGame, (ack) => console.log("Created game: ", ack));
 
   return newGame;
 };
@@ -25,7 +25,7 @@ const deleteGame = (key) => {
 
 const downloadGame = (key, onChange) => {
   G.get(key).once((requestedGame) => {
-    console.log("game downloaded: ", requestedGame);
+    console.log("Game downloaded: ", requestedGame);
     onChange(requestedGame);
   });
 };
@@ -40,61 +40,59 @@ const subscribeGame = (key, onChange) => {
   }, true);
 };
 
-const ifExistGame = (key, fnTrue, fnFalse) => {
-  G.get(key).once((requestedGame) => {
-    if (requestedGame && requestedGame.key) {
-      console.log("the game " + requestedGame.key + " exists", requestedGame);
-      fnTrue();
-    } else {
-      console.error(
-        "The game " + requestedGame.key + " doesn't exists.",
-        requestedGame
-      );
-      fnFalse();
-    }
+const existsGame = (key) => {
+  return new Promise((resolve) => {
+    G.get(key).once((requestedGame) => {
+      if (requestedGame?.key) {
+        console.log("The game " + key + " exists: ", requestedGame);
+        resolve(true);
+      } else {
+        console.log("The game " + key + " doesn't exists: ", requestedGame);
+        resolve(false);
+      }
+    });
   });
 };
 
-const ifIsMyGame = (key, clientData, fnTrue) => {
-  G.get(key).once((requestedGame) => {
-    if (
-      requestedGame &&
-      requestedGame.creatorDeviceId === clientData.deviceId
-    ) {
-      console.log("the game " + requestedGame.key + " is mine", requestedGame);
-      fnTrue();
-    }
+const isMyGame = (key, clientData) => {
+  return new Promise((resolve) => {
+    G.get(key).once((requestedGame) => {
+      if (requestedGame?.creatorDeviceId === clientData.deviceId) {
+        console.log("The game " + key + " is mine: ", requestedGame);
+        resolve(true);
+      } else {
+        console.log("The game " + key + " is not mine: ", requestedGame);
+        resolve(false);
+      }
+    });
   });
 };
 
 /* Complex game ops */
 
-export const joinGame = (key, clientData, onChange, fnJoined) => {
-  console.log("connected? ", connected);
+export const joinGame = async (key, clientData, onChange, fnJoined) => {
   if (connected) leaveGame(connected, clientData);
-  console.log("key? ", key);
+  console.log("Joining game: ", key);
   if (!key || key.length !== 4) return false;
-  ifExistGame(
-    key,
-    () => {
-      // exist
-      downloadGame(key, onChange);
-      subscribeGame(key, onChange);
-      connected = key;
-      fnJoined();
-    },
-    () => {
-      // does not
-    }
-  );
+
+  const gameExists = await existsGame(key);
+
+  if (gameExists) {
+    downloadGame(key, onChange);
+    subscribeGame(key, onChange);
+    connected = key;
+    fnJoined();
+  }
 };
 
-export const leaveGame = (key, clientData) => {
+export const leaveGame = async (key, clientData) => {
   if (!key) return;
+  console.log("Leaving game: ", key);
   G.get(key).off();
   connected = null;
   // Se il game è il mio lo elimino
-  ifIsMyGame(key, clientData, () => deleteGame(key));
+  const gameIsMine = await isMyGame(key, clientData);
+  if (gameIsMine) deleteGame(key);
 };
 
 /* Gestione player */
