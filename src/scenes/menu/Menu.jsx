@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Button from "../../components/button";
 import TextInput from "../../components/textInput";
 
-import { CLIENT_SCENES } from "../../logic/constants";
+import { CLIENT_SCENES, appVersion } from "../../logic/constants";
 import { leaveGame, createGame, joinGame } from "../../logic/database";
 
 import "./menu.css";
@@ -15,6 +15,7 @@ const Menu = ({
   changeCurrentLobbyKey,
   changeClientScene,
   mergeGameData,
+  resetGameData,
 }) => {
   const [name, setName] = useState(clientData.userName);
 
@@ -42,6 +43,7 @@ const Menu = ({
   const onLeaveCampaign = useCallback(() => {
     leaveGame(clientData.currentLobbyKey, clientData);
     changeCurrentLobbyKey(null);
+    resetGameData();
   }, [clientData]);
 
   return (
@@ -77,6 +79,7 @@ const Menu = ({
           />
         </>
       )}
+      <span className="version">{appVersion}</span>
     </div>
   );
 };
@@ -87,6 +90,7 @@ Menu.propTypes = {
   changeCurrentLobbyKey: PropTypes.func.isRequired,
   changeClientScene: PropTypes.func.isRequired,
   mergeGameData: PropTypes.func.isRequired,
+  resetGameData: PropTypes.func.isRequired,
 };
 
 Menu.defaultProps = {};

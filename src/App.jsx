@@ -119,6 +119,10 @@ const App = () => {
     }));
   }, []);
 
+  const resetGameData = useCallback(() => {
+    setGameData(null);
+  }, []);
+
   // EFFETTI ##########################################
 
   useEffect(() => {
@@ -135,6 +139,7 @@ const App = () => {
           changeCurrentLobbyKey={changeCurrentLobbyKey}
           changeClientScene={changeClientScene}
           mergeGameData={mergeGameData}
+          resetGameData={resetGameData}
         />
       )}
       {CLIENT_SCENES.LOBBY_PREGAME === clientData.clientScene && (
