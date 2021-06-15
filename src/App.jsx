@@ -21,7 +21,7 @@ const App = () => {
     const lsValue = JSON.parse(localStorage.getItem(LSKEY.CLIENT_DATA));
 
     // Se ho i dati e la versione è uguale uso quelli pulendo solo la scene corrente
-    if (lsValue.appVersion === appVersion) {
+    if (lsValue?.appVersion === appVersion) {
       return { ...lsValue, clientScene: CLIENT_SCENES.MENU };
     }
 
@@ -43,7 +43,7 @@ const App = () => {
     };
 
     // Se ho i dati, la versione è diversa e ho il vecchio device id pulisco tutto mantenendo quello e lo user name
-    if (lsValue?.appVersion !== appVersion && !!lsValue.deviceId) {
+    if (lsValue && lsValue.appVersion !== appVersion && !!lsValue.deviceId) {
       return {
         ...defaultValues,
         deviceId: lsValue.deviceId,
