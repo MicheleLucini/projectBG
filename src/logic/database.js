@@ -68,6 +68,26 @@ const isMyGame = (key, clientData) => {
   });
 };
 
+const gameIsDifferentVersion = (key) => {
+  return new Promise((resolve) => {
+    G.get(key).once((requestedGame) => {
+      if (requestedGame?.appVersion !== appVersion) {
+        console.log(
+          "The game " + key + " is of a compatible version: ",
+          requestedGame
+        );
+        resolve(true);
+      } else {
+        console.log(
+          "The game " + key + " is of an incompatible version: ",
+          requestedGame
+        );
+        resolve(false);
+      }
+    });
+  });
+};
+
 /* Complex game ops */
 
 export const joinGame = async (key, clientData, onChange, fnJoined) => {
@@ -78,6 +98,15 @@ export const joinGame = async (key, clientData, onChange, fnJoined) => {
   const gameExists = await existsGame(key);
 
   if (gameExists) {
+    const gameDifferentVersion = await gameIsDifferentVersion(key);
+
+    if (gameDifferentVersion) {
+      // Se il game è il mio lo elimino
+      const gameIsMine = await isMyGame(key, clientData);
+      if (gameIsMine) deleteGame(key);
+      return false;
+    }
+
     downloadGame(key, onChange);
     subscribeGame(key, onChange);
     connected = key;
