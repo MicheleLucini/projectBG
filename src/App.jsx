@@ -7,6 +7,7 @@ import JoinPregame from "./scenes/joinPregame";
 import CharacterSelection from "./scenes/characterSelection";
 
 import { Cursor, CursorGhost } from "./components/cursor";
+import ToastMessageContainer from "./components/toastMessage";
 
 import { appVersion, CLIENT_SCENES, LSKEY } from "./logic/constants";
 import { updateMyPlayer } from "./logic/database";
@@ -15,6 +16,33 @@ import { uuidv4 } from "./logic/utility";
 import "./App.css";
 
 const App = () => {
+  const [toastMessageIdCounter, setToastMessageIdCounter] = useState(0);
+  const [toastMessages, setToastMessages] = useState([]);
+
+  const addToastMessage = useCallback((type, text) => {
+    let id = 0;
+    setToastMessageIdCounter((prev) => {
+      id = prev + 1;
+      return id;
+    });
+
+    setToastMessages((prev) => {
+      prev.push({ id, type, text });
+      return prev;
+    });
+
+    setTimeout(() => deleteToastMessage(id), 3000);
+  }, []);
+
+  const deleteToastMessage = useCallback((id) => {
+    setToastMessages((prev) => {
+      const toastIndex = prev.findIndex((t) => t.id === id);
+      if (toastIndex < 0) return prev;
+      prev.splice(toastIndex, 1);
+      return prev;
+    });
+  }, []);
+
   // CLIENT DATA ##########################################
 
   const [clientData, setClientData] = useState(() => {
@@ -140,6 +168,7 @@ const App = () => {
           changeClientScene={changeClientScene}
           mergeGameData={mergeGameData}
           resetGameData={resetGameData}
+          addToastMessage={addToastMessage}
         />
       )}
       {CLIENT_SCENES.LOBBY_PREGAME === clientData.clientScene && (
@@ -156,6 +185,7 @@ const App = () => {
           changeCurrentLobbyKey={changeCurrentLobbyKey}
           changeClientScene={changeClientScene}
           mergeGameData={mergeGameData}
+          addToastMessage={addToastMessage}
         />
       )}
       {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene && (
@@ -178,6 +208,9 @@ const App = () => {
         clientData.playerId !== "playerYellow" && (
           <CursorGhost playerId="playerYellow" gameData={gameData} />
         )}
+
+      <ToastMessageContainer messages={toastMessages} />
+
       {clientData.cursor && (
         <Cursor
           playerId={clientData.playerId}

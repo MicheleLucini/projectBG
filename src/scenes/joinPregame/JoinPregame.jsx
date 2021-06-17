@@ -14,11 +14,12 @@ const JoinPregame = ({
   changeCurrentLobbyKey,
   changeClientScene,
   mergeGameData,
+  addToastMessage,
 }) => {
   const [lobbyCode, setLobbyCode] = useState("");
 
   const onJoinCampaign = useCallback(() => {
-    joinGame(lobbyCode, clientData, mergeGameData, () => {
+    joinGame(lobbyCode, clientData, mergeGameData, addToastMessage, () => {
       changeCurrentLobbyKey(lobbyCode);
       changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
     });
@@ -56,6 +57,7 @@ JoinPregame.propTypes = {
   changeCurrentLobbyKey: PropTypes.func.isRequired,
   changeClientScene: PropTypes.func.isRequired,
   mergeGameData: PropTypes.func.isRequired,
+  addToastMessage: PropTypes.func.isRequired,
 };
 
 JoinPregame.defaultProps = {};

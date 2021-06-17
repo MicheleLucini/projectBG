@@ -1,0 +1,29 @@
+#toast_message_container {
+  position: fixed;
+  bottom: 1rem;
+  right: 2rem;
+  z-index: 90;
+}
+
+.toast-message {
+  box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+  background-color: #292b2d;
+  color: white;
+  padding: 16px 24px;
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: 20px;
+}
+
+.toast-message.error .icon {
+  background-color: #ef5350;
+  color: #b71c1c;
+  border-radius: 50%;
+}
+
+.toast-message.error span {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-top: 5px;
+}

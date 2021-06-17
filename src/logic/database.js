@@ -40,7 +40,7 @@ const subscribeGame = (key, onChange) => {
   }, true);
 };
 
-const existsGame = (key) => {
+const existsGame = (key, addToastMessage) => {
   return new Promise((resolve) => {
     G.get(key).once((requestedGame) => {
       if (requestedGame?.key) {
@@ -48,6 +48,7 @@ const existsGame = (key) => {
         resolve(true);
       } else {
         console.log("The game " + key + " doesn't exists: ", requestedGame);
+        addToastMessage("error", "The game " + key + " doesn't exists");
         resolve(false);
       }
     });
@@ -90,12 +91,12 @@ const gameIsDifferentVersion = (key) => {
 
 /* Complex game ops */
 
-export const joinGame = async (key, clientData, onChange, fnJoined) => {
+export const joinGame = async (key, clientData, onChange, addToastMessage, fnJoined) => {
   if (connected) leaveGame(connected, clientData);
   console.log("Joining game: ", key);
   if (!key || key.length !== 4) return false;
 
-  const gameExists = await existsGame(key);
+  const gameExists = await existsGame(key, addToastMessage);
 
   if (gameExists) {
     const gameDifferentVersion = await gameIsDifferentVersion(key);

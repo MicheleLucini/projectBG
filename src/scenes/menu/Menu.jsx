@@ -16,13 +16,14 @@ const Menu = ({
   changeClientScene,
   mergeGameData,
   resetGameData,
+  addToastMessage,
 }) => {
   const [name, setName] = useState(clientData.userName);
 
   const onCreateCampaign = useCallback(() => {
     changeUserName(name);
     const newGame = createGame(clientData);
-    joinGame(newGame.key, clientData, mergeGameData, () => {
+    joinGame(newGame.key, clientData, mergeGameData, addToastMessage, () => {
       changeCurrentLobbyKey(newGame.key);
       changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
     });
@@ -35,9 +36,15 @@ const Menu = ({
 
   const onContinueCampaign = useCallback(() => {
     changeUserName(name);
-    joinGame(clientData.currentLobbyKey, clientData, mergeGameData, () => {
-      changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
-    });
+    joinGame(
+      clientData.currentLobbyKey,
+      clientData,
+      addToastMessage,
+      mergeGameData,
+      () => {
+        changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
+      }
+    );
   }, [name, clientData, mergeGameData]);
 
   const onLeaveCampaign = useCallback(() => {
@@ -91,6 +98,7 @@ Menu.propTypes = {
   changeClientScene: PropTypes.func.isRequired,
   mergeGameData: PropTypes.func.isRequired,
   resetGameData: PropTypes.func.isRequired,
+  addToastMessage: PropTypes.func.isRequired,
 };
 
 Menu.defaultProps = {};
