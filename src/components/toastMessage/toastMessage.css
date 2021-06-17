@@ -3,6 +3,8 @@
   bottom: 2rem;
   right: 2rem;
   z-index: 90;
+  display: grid;
+  grid-gap: 12px;
 }
 
 .toast-message {
@@ -32,6 +34,6 @@
 
 .toast-message.error .text {
   font-size: 1.2rem;
-  font-weight: 700;
+  font-weight: 600;
   margin-top: 4px;
 }
