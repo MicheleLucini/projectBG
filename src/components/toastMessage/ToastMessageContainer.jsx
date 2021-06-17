@@ -11,7 +11,7 @@ const ToastMessageContainer = ({ messages }) => {
           {message.type === "error" && (
             <span className="icon material-icons-round">priority_high</span>
           )}
-          <span>{message.text}</span>
+          <span className="text">{message.text}</span>
         </div>
       ))}
     </div>
