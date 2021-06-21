@@ -16,3 +16,18 @@ export const getRandomCampaignKey = () => {
   }
   return result.join("");
 };
+
+export const cursorPositionPx2Pct = (x, y, viewport) => {
+  return {
+    x: (x * 100) / viewport.width,
+    y: (y * 100) / viewport.height,
+  };
+};
+
+export const cursorXPctToPx = (x, viewport) => {
+  return (x * viewport.width) / 100;
+};
+
+export const cursorYPctToPx = (y, viewport) => {
+  return (y * viewport.height) / 100;
+};

@@ -181,6 +181,23 @@ const App = () => {
     [leaveCampaignApp]
   );
 
+  // VIEWPORT ##########################################
+
+  const [viewport, setViewport] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth,
+  });
+
+  const handleResize = useCallback(
+    () => setViewport({ height: window.innerHeight, width: window.innerWidth }),
+    []
+  );
+
+  useEffect(
+    () => window.addEventListener("resize", handleResize),
+    [handleResize]
+  );
+
   // EFFETTI ##########################################
 
   // useEffect(() => {
@@ -225,19 +242,35 @@ const App = () => {
 
       {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene &&
         clientData.playerId !== "playerBlue" && (
-          <CursorGhost playerId="playerBlue" gameData={gameData} />
+          <CursorGhost
+            playerId="playerBlue"
+            gameData={gameData}
+            viewport={viewport}
+          />
         )}
       {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene &&
         clientData.playerId !== "playerRed" && (
-          <CursorGhost playerId="playerRed" gameData={gameData} />
+          <CursorGhost
+            playerId="playerRed"
+            gameData={gameData}
+            viewport={viewport}
+          />
         )}
       {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene &&
         clientData.playerId !== "playerGreen" && (
-          <CursorGhost playerId="playerGreen" gameData={gameData} />
+          <CursorGhost
+            playerId="playerGreen"
+            gameData={gameData}
+            viewport={viewport}
+          />
         )}
       {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene &&
         clientData.playerId !== "playerYellow" && (
-          <CursorGhost playerId="playerYellow" gameData={gameData} />
+          <CursorGhost
+            playerId="playerYellow"
+            gameData={gameData}
+            viewport={viewport}
+          />
         )}
 
       <ToastMessageContainer messages={toastMessages} />
@@ -251,6 +284,7 @@ const App = () => {
           changeCursorUp={changeCursorUp}
           changeCursorDown={changeCursorDown}
           changeCursorHide={changeCursorHide}
+          viewport={viewport}
         />
       )}
     </>

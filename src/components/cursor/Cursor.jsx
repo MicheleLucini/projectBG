@@ -1,6 +1,12 @@
 import React, { useMemo, useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
+import {
+  cursorPositionPx2Pct,
+  cursorXPctToPx,
+  cursorYPctToPx,
+} from "../../logic/utility";
+
 import "./cursor.css";
 
 const Cursor = ({
@@ -11,13 +17,8 @@ const Cursor = ({
   changeCursorHide,
   changeCursorUp,
   changeCursorDown,
+  viewport,
 }) => {
-  // const [hide, setHide] = useState(true);
-  // const [mouseDown, setMouseDown] = useState(false);
-  // const [mouseUp, setMouseUp] = useState(false);
-  // const [x, setX] = useState(0);
-  // const [y, setY] = useState(0);
-
   const cursorColor = useMemo(() => {
     switch (playerId) {
       case "playerBlue":
@@ -52,39 +53,34 @@ const Cursor = ({
     [cursorColor, cursorData.hide, cursorData.mouseDown, cursorData.mouseUp]
   );
 
-  const handleMouseMove = useCallback((event) => {
-    const e = event || window.event;
-    changeCursorX(e.x);
-    changeCursorY(e.y);
-    // setX(e.x);
-    // setY(e.y);
-  }, []);
+  const handleMouseMove = useCallback(
+    (event) => {
+      const e = event || window.event;
+      const { x, y } = cursorPositionPx2Pct(e.x, e.y, viewport);
+      changeCursorX(x);
+      changeCursorY(y);
+    },
+    [changeCursorX, changeCursorY, viewport]
+  );
 
   const handleMouseEnter = useCallback(() => {
     changeCursorHide(false);
-    // setHide(false);
-  }, []);
+  }, [changeCursorHide]);
 
   const handleMouseLeave = useCallback(() => {
     changeCursorUp(false);
     changeCursorHide(true);
-    // setMouseUp(false);
-    // setHide(true);
-  }, []);
+  }, [changeCursorUp, changeCursorHide]);
 
   const handleMouseDown = useCallback(() => {
     changeCursorUp(false);
     changeCursorDown(true);
-    // setMouseUp(false);
-    // setMouseDown(true);
-  }, []);
+  }, [changeCursorUp, changeCursorDown]);
 
   const handleMouseUp = useCallback(() => {
     changeCursorDown(false);
     changeCursorUp(true);
-    // setMouseDown(false);
-    // setMouseUp(true);
-  }, []);
+  }, [changeCursorDown, changeCursorUp]);
 
   const handleContextMenu = useCallback((event) => {
     event.preventDefault();
@@ -98,13 +94,25 @@ const Cursor = ({
     document.onmousedown = handleMouseDown;
     document.onmouseup = handleMouseUp;
     document.oncontextmenu = handleContextMenu;
-  });
+  }, [
+    handleMouseMove,
+    handleMouseEnter,
+    handleMouseLeave,
+    handleMouseDown,
+    handleMouseUp,
+    handleContextMenu,
+  ]);
 
   return (
     <div
       className={cursorClass}
       style={{
-        transform: "translate(" + cursorData.x + "px, " + cursorData.y + "px)",
+        transform:
+          "translate(" +
+          cursorXPctToPx(cursorData.x, viewport) +
+          "px, " +
+          cursorYPctToPx(cursorData.y, viewport) +
+          "px)",
       }}
     >
       <div className="goccia"></div>
@@ -121,6 +129,7 @@ Cursor.propTypes = {
   changeCursorUp: PropTypes.func.isRequired,
   changeCursorDown: PropTypes.func.isRequired,
   changeCursorHide: PropTypes.func.isRequired,
+  viewport: PropTypes.object.isRequired,
 };
 
 Cursor.defaultProps = {

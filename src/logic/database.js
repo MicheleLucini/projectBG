@@ -1,7 +1,7 @@
 import Gun from "gun";
 
 const G = Gun(["https://project-bg.herokuapp.com/gun"]);
-const dbLogActive = true;
+const dbLogActive = false;
 
 const dbLog = (message?: any, ...params: any[]) => {
   if (dbLogActive) console.log(message, ...params);

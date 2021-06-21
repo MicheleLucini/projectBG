@@ -1,9 +1,11 @@
 import React, { useMemo, useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
+import { cursorXPctToPx, cursorYPctToPx } from "../../logic/utility";
+
 import "./cursor.css";
 
-const CursorGhost = ({ playerId, gameData }) => {
+const CursorGhost = ({ playerId, gameData, viewport }) => {
   if (!gameData || !gameData[playerId + "_userName"]) return null;
 
   const cursorColor = useMemo(() => {
@@ -44,9 +46,9 @@ const CursorGhost = ({ playerId, gameData }) => {
       style={{
         transform:
           "translate(" +
-          gameData[playerId + "_cursorX"] +
+          cursorXPctToPx(gameData[playerId + "_cursorX"], viewport) +
           "px, " +
-          gameData[playerId + "_cursorY"] +
+          cursorYPctToPx(gameData[playerId + "_cursorY"], viewport) +
           "px)",
       }}
     >
@@ -59,6 +61,7 @@ const CursorGhost = ({ playerId, gameData }) => {
 CursorGhost.propTypes = {
   playerId: PropTypes.string,
   gameData: PropTypes.object,
+  viewport: PropTypes.object.isRequired,
 };
 
 CursorGhost.defaultProps = {
