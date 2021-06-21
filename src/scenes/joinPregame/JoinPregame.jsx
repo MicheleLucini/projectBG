@@ -26,6 +26,7 @@ const JoinPregame = ({
     });
 
     if (!error) {
+      changeCampaignKey(lobbyCode);
       changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
     } else {
       addToastMessage("error", error);
