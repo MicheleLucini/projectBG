@@ -5,72 +5,112 @@ import Button from "../../components/button";
 import TextInput from "../../components/textInput";
 
 import { CLIENT_SCENES, appVersion } from "../../logic/constants";
-import { leaveGame, createGame, joinGame } from "../../logic/database";
+import {
+  createCampaign,
+  joinCampaign,
+  leaveCampaign,
+} from "../../logic/campaign";
 
 import "./menu.css";
 
 const Menu = ({
   clientData,
   changeUserName,
-  changeCurrentLobbyKey,
+  changeCampaignKey,
   changeClientScene,
+  softResetClientData,
+
   mergeGameData,
-  resetGameData,
+
   addToastMessage,
 }) => {
   const [name, setName] = useState(clientData.userName);
 
-  const onCreateCampaign = useCallback(() => {
+  const onCreateCampaign = useCallback(async () => {
     changeUserName(name);
-    const newGame = createGame(clientData);
-    joinGame(newGame.key, clientData, mergeGameData, addToastMessage, () => {
-      changeCurrentLobbyKey(newGame.key);
-      changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
+
+    const newGame = await createCampaign(clientData);
+
+    await joinCampaign({
+      key: newGame.key,
+      clientData,
+      onCampaignChange: mergeGameData,
     });
-  }, [name, clientData, mergeGameData]);
+
+    changeCampaignKey(newGame.key);
+
+    changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
+  }, [
+    changeUserName,
+    name,
+    clientData,
+    addToastMessage,
+    mergeGameData,
+    changeCampaignKey,
+    changeClientScene,
+  ]);
 
   const onJoinCampaign = useCallback(() => {
     changeUserName(name);
     changeClientScene(CLIENT_SCENES.JOIN_LOBBY_PREGAME);
-  }, [name]);
+  }, [changeUserName, name, changeClientScene]);
 
-  const onContinueCampaign = useCallback(() => {
+  const onContinueCampaign = useCallback(async () => {
     changeUserName(name);
-    joinGame(
-      clientData.currentLobbyKey,
-      clientData,
-      addToastMessage,
-      mergeGameData,
-      () => {
-        changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
-      }
-    );
-  }, [name, clientData, mergeGameData]);
 
-  const onLeaveCampaign = useCallback(() => {
-    leaveGame(clientData.currentLobbyKey, clientData);
-    changeCurrentLobbyKey(null);
-    resetGameData();
-  }, [clientData]);
+    const error = await joinCampaign({
+      key: clientData.campaignKey,
+      clientData,
+      onCampaignChange: mergeGameData,
+    });
+
+    if (!error) {
+      changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
+    } else {
+      addToastMessage(error);
+    }
+  }, [
+    changeUserName,
+    name,
+    clientData,
+    mergeGameData,
+    changeClientScene,
+    addToastMessage,
+  ]);
+
+  const onLeaveCampaign = useCallback(async () => {
+    await leaveCampaign(
+      clientData.campaignKey,
+      clientData.deviceId,
+      clientData.playerId
+    );
+
+    softResetClientData();
+  }, [
+    clientData.campaignKey,
+    clientData.deviceId,
+    clientData.playerId,
+    softResetClientData,
+  ]);
 
   return (
     <div id="menu">
       <TextInput label="Name" value={name} setValue={setName} />
-      {clientData.currentLobbyKey && (
+      {clientData.campaignKey && (
         <>
           <Button
-            text={"Continue campaign " + clientData.currentLobbyKey}
+            text={"Continue campaign " + clientData.campaignKey}
             icon="navigate_next"
             onClick={onContinueCampaign}
           />
           <Button
-            text={"Leave campaign " + clientData.currentLobbyKey}
+            text={"Leave campaign " + clientData.campaignKey}
             icon="logout"
             onClick={onLeaveCampaign}
           />
         </>
       )}
-      {!clientData.currentLobbyKey && (
+      {!clientData.campaignKey && (
         <>
           <Button
             text="Create campaign"
@@ -94,10 +134,12 @@ const Menu = ({
 Menu.propTypes = {
   clientData: PropTypes.object.isRequired,
   changeUserName: PropTypes.func.isRequired,
-  changeCurrentLobbyKey: PropTypes.func.isRequired,
+  changeCampaignKey: PropTypes.func.isRequired,
   changeClientScene: PropTypes.func.isRequired,
+  softResetClientData: PropTypes.func.isRequired,
+
   mergeGameData: PropTypes.func.isRequired,
-  resetGameData: PropTypes.func.isRequired,
+
   addToastMessage: PropTypes.func.isRequired,
 };
 

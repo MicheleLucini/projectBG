@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import Button from "../../components/button";
 import PlayerSlot from "./PlayerSlot";
 
-import { resetMyPlayer } from "../../logic/database";
 import { CLIENT_SCENES } from "../../logic/constants";
+import { resetMyPlayer } from "../../logic/campaign";
 
 import "./pregame.css";
 
@@ -14,24 +14,32 @@ const Pregame = ({
   gameData,
   changePlayerId,
   changeClientScene,
+  addToastMessage,
 }) => {
   const onSelectPlayerSlot = useCallback(
-    (playerId) => {
+    async (newPlayerId) => {
       // Se non è già occupato
-      if (gameData[playerId + "_deviceId"]) return;
+      if (gameData[newPlayerId + "_deviceId"])
+        return addToastMessage("error", "Already taken");
       // Libero il posto
-      resetMyPlayer(clientData);
+      await resetMyPlayer(clientData.campaignKey, clientData.playerId);
       // Occupo il nuovo
-      changePlayerId(playerId);
+      changePlayerId(newPlayerId);
     },
-    [clientData]
+    [
+      gameData,
+      addToastMessage,
+      clientData.campaignKey,
+      clientData.playerId,
+      changePlayerId,
+    ]
   );
 
   return (
     <div id="pregame">
       <div className="lobby-key">
         Lobby code:
-        <span className="selectable">{clientData.currentLobbyKey}</span>
+        <span className="selectable">{clientData.campaignKey}</span>
       </div>
       <PlayerSlot
         color="blue"
@@ -76,6 +84,7 @@ Pregame.propTypes = {
   gameData: PropTypes.object,
   changePlayerId: PropTypes.func.isRequired,
   changeClientScene: PropTypes.func.isRequired,
+  addToastMessage: PropTypes.func.isRequired,
 };
 
 Pregame.defaultProps = {

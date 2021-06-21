@@ -4,28 +4,42 @@ import PropTypes from "prop-types";
 import Button from "../../components/button";
 import TextInput from "../../components/textInput";
 
-import { CLIENT_SCENES, LSKEY } from "../../logic/constants";
-import { joinGame } from "../../logic/database";
+import { CLIENT_SCENES } from "../../logic/constants";
+import { joinCampaign } from "../../logic/campaign";
 
 import "./joinPregame.css";
 
 const JoinPregame = ({
   clientData,
-  changeCurrentLobbyKey,
+  changeCampaignKey,
   changeClientScene,
   mergeGameData,
   addToastMessage,
 }) => {
   const [lobbyCode, setLobbyCode] = useState("");
 
-  const onJoinCampaign = useCallback(() => {
-    joinGame(lobbyCode, clientData, mergeGameData, addToastMessage, () => {
-      changeCurrentLobbyKey(lobbyCode);
-      changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
+  const onJoinCampaign = useCallback(async () => {
+    const error = await joinCampaign({
+      key: lobbyCode,
+      clientData,
+      onCampaignChange: mergeGameData,
     });
-  }, [lobbyCode, clientData, mergeGameData]);
+
+    if (!error) {
+      changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
+    } else {
+      addToastMessage("error", error);
+    }
+  }, [
+    lobbyCode,
+    clientData,
+    mergeGameData,
+    changeClientScene,
+    addToastMessage,
+  ]);
 
   const customSetLobbyCode = useCallback((value) => {
+    if (value?.length > 4) return;
     setLobbyCode(value.toUpperCase());
   }, []);
 
@@ -54,7 +68,7 @@ const JoinPregame = ({
 
 JoinPregame.propTypes = {
   clientData: PropTypes.object.isRequired,
-  changeCurrentLobbyKey: PropTypes.func.isRequired,
+  changeCampaignKey: PropTypes.func.isRequired,
   changeClientScene: PropTypes.func.isRequired,
   mergeGameData: PropTypes.func.isRequired,
   addToastMessage: PropTypes.func.isRequired,

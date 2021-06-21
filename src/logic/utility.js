@@ -6,7 +6,7 @@ export const uuidv4 = () => {
   });
 };
 
-export const getRandomGameKey = () => {
+export const getRandomCampaignKey = () => {
   var result = [];
   var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   for (var i = 0; i < 4; i++) {

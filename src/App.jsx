@@ -10,7 +10,7 @@ import { Cursor, CursorGhost } from "./components/cursor";
 import ToastMessageContainer from "./components/toastMessage";
 
 import { appVersion, CLIENT_SCENES, LSKEY } from "./logic/constants";
-import { updateMyPlayer } from "./logic/database";
+import { updateMyPlayer, leaveCampaign } from "./logic/campaign";
 import { uuidv4 } from "./logic/utility";
 
 import "./App.css";
@@ -18,21 +18,6 @@ import "./App.css";
 const App = () => {
   const [toastMessageIdCounter, setToastMessageIdCounter] = useState(0);
   const [toastMessages, setToastMessages] = useState([]);
-
-  const addToastMessage = useCallback((type, text) => {
-    let id = 0;
-    setToastMessageIdCounter((prev) => {
-      id = prev + 1;
-      return id;
-    });
-
-    setToastMessages((prev) => {
-      prev.push({ id, type, text });
-      return prev;
-    });
-
-    setTimeout(() => deleteToastMessage(id), 3000);
-  }, []);
 
   const deleteToastMessage = useCallback((id) => {
     setToastMessages((prev) => {
@@ -42,6 +27,24 @@ const App = () => {
       return prev;
     });
   }, []);
+
+  const addToastMessage = useCallback(
+    (type, text) => {
+      let id = 0;
+      setToastMessageIdCounter((prev) => {
+        id = prev + 1;
+        return id;
+      });
+
+      setToastMessages((prev) => {
+        prev.push({ id, type, text });
+        return prev;
+      });
+
+      setTimeout(() => deleteToastMessage(id), 3000);
+    },
+    [deleteToastMessage]
+  );
 
   // CLIENT DATA ##########################################
 
@@ -58,7 +61,7 @@ const App = () => {
       deviceId: uuidv4(),
       clientScene: CLIENT_SCENES.MENU,
       userName: "",
-      currentLobbyKey: null,
+      campaignKey: null,
       playerId: null,
       cursor: {
         x: 0,
@@ -87,6 +90,15 @@ const App = () => {
     localStorage.setItem(LSKEY.CLIENT_DATA, JSON.stringify(clientData));
   }, [clientData]);
 
+  const softResetClientData = useCallback(() => {
+    setClientData((prev) => ({
+      ...prev,
+      clientScene: CLIENT_SCENES.MENU,
+      campaignKey: null,
+      playerId: null,
+    }));
+  }, []);
+
   const changeClientScene = useCallback((newScene) => {
     setClientData((prev) => ({ ...prev, clientScene: newScene }));
   }, []);
@@ -95,8 +107,8 @@ const App = () => {
     setClientData((prev) => ({ ...prev, userName: newUserName }));
   }, []);
 
-  const changeCurrentLobbyKey = useCallback((newCurrentLobbyKey) => {
-    setClientData((prev) => ({ ...prev, currentLobbyKey: newCurrentLobbyKey }));
+  const changeCampaignKey = useCallback((newCampaignKey) => {
+    setClientData((prev) => ({ ...prev, campaignKey: newCampaignKey }));
   }, []);
 
   const changePlayerId = useCallback((newPlayerId) => {
@@ -140,22 +152,40 @@ const App = () => {
 
   const [gameData, setGameData] = useState(null);
 
-  const mergeGameData = useCallback((newValue) => {
-    setGameData((prev) => ({
-      ...prev,
-      ...newValue,
-    }));
-  }, []);
-
-  const resetGameData = useCallback(() => {
+  const leaveCampaignApp = useCallback(() => {
+    leaveCampaign(
+      clientData.campaignKey,
+      clientData.deviceId,
+      clientData.playerId
+    );
+    softResetClientData();
     setGameData(null);
-  }, []);
+  }, [
+    clientData.campaignKey,
+    clientData.deviceId,
+    clientData.playerId,
+    softResetClientData,
+  ]);
+
+  const mergeGameData = useCallback(
+    (newValue) => {
+      if (newValue?.deleted === true) {
+        leaveCampaignApp();
+        return;
+      }
+      setGameData((prev) => ({
+        ...prev,
+        ...newValue,
+      }));
+    },
+    [leaveCampaignApp]
+  );
 
   // EFFETTI ##########################################
 
-  useEffect(() => {
-    console.log("gameData changed: ", { ...gameData });
-  }, [gameData]);
+  // useEffect(() => {
+  //   console.log("gameData changed: ", { ...gameData });
+  // }, [gameData]);
 
   return (
     <>
@@ -164,10 +194,10 @@ const App = () => {
         <Menu
           clientData={clientData}
           changeUserName={changeUserName}
-          changeCurrentLobbyKey={changeCurrentLobbyKey}
+          changeCampaignKey={changeCampaignKey}
           changeClientScene={changeClientScene}
+          softResetClientData={softResetClientData}
           mergeGameData={mergeGameData}
-          resetGameData={resetGameData}
           addToastMessage={addToastMessage}
         />
       )}
@@ -177,12 +207,13 @@ const App = () => {
           gameData={gameData}
           changePlayerId={changePlayerId}
           changeClientScene={changeClientScene}
+          addToastMessage={addToastMessage}
         />
       )}
       {CLIENT_SCENES.JOIN_LOBBY_PREGAME === clientData.clientScene && (
         <JoinPregame
           clientData={clientData}
-          changeCurrentLobbyKey={changeCurrentLobbyKey}
+          changeCampaignKey={changeCampaignKey}
           changeClientScene={changeClientScene}
           mergeGameData={mergeGameData}
           addToastMessage={addToastMessage}

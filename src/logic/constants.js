@@ -1,4 +1,4 @@
-export const appVersion = "0.0.4";
+export const appVersion = "0.0.5";
 
 export const CLIENT_SCENES = {
   MENU: "menu",
