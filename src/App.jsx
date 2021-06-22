@@ -193,10 +193,10 @@ const App = () => {
     []
   );
 
-  useEffect(
-    () => window.addEventListener("resize", handleResize),
-    [handleResize]
-  );
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [handleResize]);
 
   // EFFETTI ##########################################
 
