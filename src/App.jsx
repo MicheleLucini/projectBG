@@ -20,26 +20,19 @@ const App = () => {
   const [toastMessages, setToastMessages] = useState([]);
 
   const deleteToastMessage = useCallback((id) => {
-    setToastMessages((prev) => {
-      const toastIndex = prev.findIndex((t) => t.id === id);
-      if (toastIndex < 0) return prev;
-      prev.splice(toastIndex, 1);
-      return prev;
-    });
+    setToastMessages((prev) => prev.filter((toastMessage) => toastMessage.id !== id));
   }, []);
 
   const addToastMessage = useCallback(
     (type, text) => {
       let id = 0;
+      
       setToastMessageIdCounter((prev) => {
         id = prev + 1;
         return id;
       });
 
-      setToastMessages((prev) => {
-        prev.push({ id, type, text });
-        return prev;
-      });
+      setToastMessages((prev) => ([ ...prev, { id, type, text } ]));
 
       setTimeout(() => deleteToastMessage(id), 3000);
     },
