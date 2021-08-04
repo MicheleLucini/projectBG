@@ -1,4 +1,6 @@
-export const appVersion = "0.0.5";
+import packageJson from "../../package.json";
+
+export const appVersion = packageJson.version;
 
 export const CLIENT_SCENES = {
   MENU: "menu",
