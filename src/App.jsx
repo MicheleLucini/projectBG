@@ -16,23 +16,21 @@ import { uuidv4 } from "./logic/utility";
 import "./App.css";
 
 const App = () => {
-  const [toastMessageIdCounter, setToastMessageIdCounter] = useState(0);
+  // TOAST MESSAGES ##########################################
+
   const [toastMessages, setToastMessages] = useState([]);
 
   const deleteToastMessage = useCallback((id) => {
-    setToastMessages((prev) => prev.filter((toastMessage) => toastMessage.id !== id));
+    setToastMessages((prev) =>
+      prev.filter((toastMessage) => toastMessage.id !== id)
+    );
   }, []);
 
   const addToastMessage = useCallback(
     (type, text) => {
-      let id = 0;
-      
-      setToastMessageIdCounter((prev) => {
-        id = prev + 1;
-        return id;
-      });
+      let id = uuidv4();
 
-      setToastMessages((prev) => ([ ...prev, { id, type, text } ]));
+      setToastMessages((prev) => [...prev, { id, type, text }]);
 
       setTimeout(() => deleteToastMessage(id), 3000);
     },
