@@ -12,6 +12,7 @@ import ToastMessageContainer from "./components/toastMessage";
 import { appVersion, CLIENT_SCENES, LSKEY } from "./logic/constants";
 import { updateMyPlayer, leaveCampaign } from "./logic/campaign";
 import { uuidv4 } from "./logic/utility";
+import { lsGet, alsSet } from "./logic/storage";
 
 import "./App.css";
 
@@ -40,7 +41,7 @@ const App = () => {
   // CLIENT DATA ##########################################
 
   const [clientData, setClientData] = useState(() => {
-    const lsValue = JSON.parse(localStorage.getItem(LSKEY.CLIENT_DATA));
+    const lsValue = lsGet(LSKEY.CLIENT_DATA);
 
     // Se ho i dati e la versione è uguale uso quelli pulendo solo la scene corrente
     if (lsValue?.appVersion === appVersion) {
@@ -78,7 +79,7 @@ const App = () => {
 
   useEffect(() => {
     updateMyPlayer(clientData);
-    localStorage.setItem(LSKEY.CLIENT_DATA, JSON.stringify(clientData));
+    alsSet(LSKEY.CLIENT_DATA, clientData);
   }, [clientData]);
 
   const softResetClientData = useCallback(() => {

@@ -10,5 +10,5 @@ export const CLIENT_SCENES = {
 };
 
 export const LSKEY = {
-  CLIENT_DATA: "CLIENT_DATA",
+  CLIENT_DATA: "client_data",
 };
