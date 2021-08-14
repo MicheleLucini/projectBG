@@ -98,7 +98,7 @@ export const leaveCampaign = async (key, deviceId, playerId) => {
 
 /* Gestione player */
 
-export const updateMyPlayer = (clientData) => {
+export const updateMyPlayer = (clientData, clientCursor) => {
   if (!clientData.playerId || !clientData.campaignKey) return;
 
   let myPlayerData = {};
@@ -106,11 +106,14 @@ export const updateMyPlayer = (clientData) => {
   myPlayerData[clientData.playerId + "_userName"] = clientData.userName;
   myPlayerData[clientData.playerId + "_clientScene"] = clientData.clientScene;
 
-  if (clientData.clientScene === CLIENT_SCENES.CHARACTER_SELECTION) {
-    myPlayerData[clientData.playerId + "_cursorX"] = clientData.cursor.x;
-    myPlayerData[clientData.playerId + "_cursorY"] = clientData.cursor.y;
-    myPlayerData[clientData.playerId + "_cursorHide"] = clientData.cursor.hide;
-    myPlayerData[clientData.playerId + "_cursorText"] = clientData.cursor.text;
+  if (
+    clientCursor &&
+    clientData.clientScene === CLIENT_SCENES.CHARACTER_SELECTION
+  ) {
+    myPlayerData[clientData.playerId + "_cursorX"] = clientCursor.x;
+    myPlayerData[clientData.playerId + "_cursorY"] = clientCursor.y;
+    myPlayerData[clientData.playerId + "_cursorHide"] = clientCursor.hide;
+    myPlayerData[clientData.playerId + "_cursorText"] = clientCursor.text;
   } else {
     myPlayerData[clientData.playerId + "_cursorX"] = 0;
     myPlayerData[clientData.playerId + "_cursorY"] = 0;

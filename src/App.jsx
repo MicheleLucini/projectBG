@@ -55,14 +55,6 @@ const App = () => {
       userName: "",
       campaignKey: null,
       playerId: null,
-      cursor: {
-        x: 0,
-        y: 0,
-        mouseUp: false,
-        mouseDown: false,
-        hide: true,
-        text: "",
-      },
     };
 
     // Se ho i dati, la versione è diversa e ho il vecchio device id pulisco tutto mantenendo quello e lo user name
@@ -78,7 +70,6 @@ const App = () => {
   });
 
   useEffect(() => {
-    updateMyPlayer(clientData);
     alsSet(LSKEY.CLIENT_DATA, clientData);
   }, [clientData]);
 
@@ -109,36 +100,51 @@ const App = () => {
 
   // CLIENT DATA CURSOR ##########################################
 
+  const [clientCursor, setClientCursor] = useState({
+    x: 0,
+    y: 0,
+    mouseUp: false,
+    mouseDown: false,
+    hide: true,
+    text: "",
+  });
+
   const changeCursorX = useCallback((newValue) => {
-    setClientData((prev) => ({
+    setClientCursor((prev) => ({
       ...prev,
-      cursor: { ...prev.cursor, x: newValue, hide: false },
+      x: newValue,
+      hide: false,
     }));
   }, []);
   const changeCursorY = useCallback((newValue) => {
-    setClientData((prev) => ({
+    setClientCursor((prev) => ({
       ...prev,
-      cursor: { ...prev.cursor, y: newValue, hide: false },
+      y: newValue,
+      hide: false,
     }));
   }, []);
   const changeCursorUp = useCallback((newValue) => {
-    setClientData((prev) => ({
+    setClientCursor((prev) => ({
       ...prev,
-      cursor: { ...prev.cursor, mouseUp: newValue },
+      mouseUp: newValue,
     }));
   }, []);
   const changeCursorDown = useCallback((newValue) => {
-    setClientData((prev) => ({
+    setClientCursor((prev) => ({
       ...prev,
-      cursor: { ...prev.cursor, mouseDown: newValue },
+      mouseDown: newValue,
     }));
   }, []);
   const changeCursorHide = useCallback((newValue) => {
-    setClientData((prev) => ({
+    setClientCursor((prev) => ({
       ...prev,
-      cursor: { ...prev.cursor, hide: newValue },
+      hide: newValue,
     }));
   }, []);
+
+  useEffect(() => {
+    updateMyPlayer(clientData, clientCursor);
+  }, [clientData, clientCursor]);
 
   // GAME DATA ##########################################
 
@@ -267,10 +273,10 @@ const App = () => {
 
       <ToastMessageContainer messages={toastMessages} />
 
-      {clientData.cursor && (
+      {clientCursor && (
         <Cursor
           playerId={clientData.playerId}
-          cursorData={clientData.cursor}
+          cursorData={clientCursor}
           changeCursorX={changeCursorX}
           changeCursorY={changeCursorY}
           changeCursorUp={changeCursorUp}
