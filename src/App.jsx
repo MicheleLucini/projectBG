@@ -211,7 +211,7 @@ const App = () => {
           changeUserName={changeUserName}
           changeCampaignKey={changeCampaignKey}
           changeClientScene={changeClientScene}
-          softResetClientData={softResetClientData}
+          leaveCampaignApp={leaveCampaignApp}
           mergeGameData={mergeGameData}
           addToastMessage={addToastMessage}
         />

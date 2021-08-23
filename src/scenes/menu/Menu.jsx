@@ -5,11 +5,7 @@ import Button from "../../components/button";
 import TextInput from "../../components/textInput";
 
 import { CLIENT_SCENES, appVersion } from "../../logic/constants";
-import {
-  createCampaign,
-  joinCampaign,
-  leaveCampaign,
-} from "../../logic/campaign";
+import { createCampaign, joinCampaign } from "../../logic/campaign";
 
 import "./menu.css";
 
@@ -18,10 +14,8 @@ const Menu = ({
   changeUserName,
   changeCampaignKey,
   changeClientScene,
-  softResetClientData,
-
+  leaveCampaignApp,
   mergeGameData,
-
   addToastMessage,
 }) => {
   const [name, setName] = useState(clientData.userName);
@@ -78,24 +72,13 @@ const Menu = ({
     addToastMessage,
   ]);
 
-  const onLeaveCampaign = useCallback(async () => {
-    await leaveCampaign(
-      clientData.campaignKey,
-      clientData.deviceId,
-      clientData.playerId
-    );
-
-    softResetClientData();
-  }, [
-    clientData.campaignKey,
-    clientData.deviceId,
-    clientData.playerId,
-    softResetClientData,
-  ]);
+  const onLeaveCampaign = useCallback(() => {
+    leaveCampaignApp();
+  }, [leaveCampaignApp]);
 
   return (
     <div id="menu">
-      <TextInput label="Name" value={name} setValue={setName} />
+      <TextInput label="Username" value={name} setValue={setName} />
       {clientData.campaignKey && (
         <>
           <Button
@@ -136,10 +119,8 @@ Menu.propTypes = {
   changeUserName: PropTypes.func.isRequired,
   changeCampaignKey: PropTypes.func.isRequired,
   changeClientScene: PropTypes.func.isRequired,
-  softResetClientData: PropTypes.func.isRequired,
-
+  leaveCampaignApp: PropTypes.func.isRequired,
   mergeGameData: PropTypes.func.isRequired,
-
   addToastMessage: PropTypes.func.isRequired,
 };
 
