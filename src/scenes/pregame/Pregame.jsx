@@ -73,7 +73,7 @@ const Pregame = ({
       <Button
         text="Start"
         icon="play_arrow"
-        onClick={() => changeClientScene(CLIENT_SCENES.CHARACTER_SELECTION)}
+        onClick={() => changeClientScene(CLIENT_SCENES.GAME)}
       />
     </div>
   );

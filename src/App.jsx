@@ -4,7 +4,7 @@ import Background from "./scenes/background";
 import Menu from "./scenes/menu";
 import Pregame from "./scenes/pregame";
 import JoinPregame from "./scenes/joinPregame";
-import CharacterSelection from "./scenes/characterSelection";
+import Game from "./scenes/game";
 
 import { Cursor, CursorGhost } from "./components/cursor";
 import ToastMessageContainer from "./components/toastMessage";
@@ -234,11 +234,11 @@ const App = () => {
           addToastMessage={addToastMessage}
         />
       )}
-      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene && (
-        <CharacterSelection changeClientScene={changeClientScene} />
+      {CLIENT_SCENES.GAME === clientData.clientScene && (
+        <Game changeClientScene={changeClientScene} />
       )}
 
-      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene &&
+      {CLIENT_SCENES.GAME === clientData.clientScene &&
         clientData.playerId !== "playerBlue" && (
           <CursorGhost
             playerId="playerBlue"
@@ -246,7 +246,7 @@ const App = () => {
             viewport={viewport}
           />
         )}
-      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene &&
+      {CLIENT_SCENES.GAME === clientData.clientScene &&
         clientData.playerId !== "playerRed" && (
           <CursorGhost
             playerId="playerRed"
@@ -254,7 +254,7 @@ const App = () => {
             viewport={viewport}
           />
         )}
-      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene &&
+      {CLIENT_SCENES.GAME === clientData.clientScene &&
         clientData.playerId !== "playerGreen" && (
           <CursorGhost
             playerId="playerGreen"
@@ -262,7 +262,7 @@ const App = () => {
             viewport={viewport}
           />
         )}
-      {CLIENT_SCENES.CHARACTER_SELECTION === clientData.clientScene &&
+      {CLIENT_SCENES.GAME === clientData.clientScene &&
         clientData.playerId !== "playerYellow" && (
           <CursorGhost
             playerId="playerYellow"

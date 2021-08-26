@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import Button from "../../components/button";
 import { CLIENT_SCENES } from "../../logic/constants";
 
-import "./characterSelection.css";
+import "./game.css";
 
-const CharacterSelection = ({ changeClientScene }) => {
+const Game = ({ changeClientScene }) => {
   return (
-    <div id="character_selection">
+    <div id="game">
       <div></div>
       <div></div>
       <div></div>
@@ -21,10 +21,10 @@ const CharacterSelection = ({ changeClientScene }) => {
   );
 };
 
-CharacterSelection.propTypes = {
+Game.propTypes = {
   changeClientScene: PropTypes.func.isRequired,
 };
 
-CharacterSelection.defaultProps = {};
+Game.defaultProps = {};
 
-export default CharacterSelection;
+export default Game;

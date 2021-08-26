@@ -108,7 +108,7 @@ export const updateMyPlayer = (clientData, clientCursor) => {
 
   if (
     clientCursor &&
-    clientData.clientScene === CLIENT_SCENES.CHARACTER_SELECTION
+    clientData.clientScene === CLIENT_SCENES.GAME
   ) {
     myPlayerData[clientData.playerId + "_cursorX"] = clientCursor.x;
     myPlayerData[clientData.playerId + "_cursorY"] = clientCursor.y;
