@@ -7,7 +7,11 @@ const Button = ({ id, text, icon, onClick, disabled }) => {
   return (
     <button
       id={id}
-      className={"simple-button" + (disabled ? " disabled" : "")}
+      className={
+        "simple-button" +
+        (disabled ? " disabled" : "") +
+        (!text ? " icon-only" : "")
+      }
       type="button"
       onClick={onClick}
     >
