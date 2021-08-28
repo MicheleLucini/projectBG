@@ -235,7 +235,11 @@ const App = () => {
         />
       )}
       {CLIENT_SCENES.GAME === clientData.clientScene && (
-        <Game changeClientScene={changeClientScene} />
+        <Game
+          clientData={clientData}
+          gameData={gameData}
+          leaveCampaignApp={leaveCampaignApp}
+        />
       )}
 
       {CLIENT_SCENES.GAME === clientData.clientScene &&

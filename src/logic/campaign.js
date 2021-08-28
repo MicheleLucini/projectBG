@@ -5,7 +5,7 @@ import {
   dbSubscribe,
   dbUnsubscribe,
 } from "./database";
-import { getRandomCampaignKey } from "./utility";
+import { getRandomCampaignKey, getNewShuffledDeck } from "./utility";
 import { appVersion, CLIENT_SCENES } from "./constants";
 
 // const campaign = {
@@ -106,10 +106,7 @@ export const updateMyPlayer = (clientData, clientCursor) => {
   myPlayerData[clientData.playerId + "_userName"] = clientData.userName;
   myPlayerData[clientData.playerId + "_clientScene"] = clientData.clientScene;
 
-  if (
-    clientCursor &&
-    clientData.clientScene === CLIENT_SCENES.GAME
-  ) {
+  if (clientCursor && clientData.clientScene === CLIENT_SCENES.GAME) {
     myPlayerData[clientData.playerId + "_cursorX"] = clientCursor.x;
     myPlayerData[clientData.playerId + "_cursorY"] = clientCursor.y;
     myPlayerData[clientData.playerId + "_cursorHide"] = clientCursor.hide;
@@ -137,4 +134,29 @@ export const resetMyPlayer = (key, playerId) => {
   myPlayerData[playerId + "_cursorText"] = null;
 
   updateCampaign(key, myPlayerData);
+};
+
+/* Gestione deck */
+
+export const updateDeck = async (clientData, deck) => {
+  const campaign = await dbRead(key);
+
+  if (!clientData.campaignKey || campaign?.creatorDeviceId !== deviceId) return;
+
+  updateCampaign(clientData.campaignKey, { deck });
+};
+
+export const shuffleDeck = async (clientData, gameData) => {
+  if (
+    !clientData.campaignKey ||
+    gameData?.creatorDeviceId !== clientData.deviceId ||
+    gameData?.deck
+  )
+    return;
+
+  console.log("Deck shuffled!");
+
+  updateCampaign(clientData.campaignKey, {
+    deck: JSON.stringify(getNewShuffledDeck()),
+  });
 };

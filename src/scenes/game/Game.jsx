@@ -1,34 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import Button from "../../components/button";
 import Deck from "../../components/deck";
-import { CLIENT_SCENES } from "../../logic/constants";
-import { getNewShuffledDeck } from "../../logic/utility";
+import { shuffleDeck } from "../../logic/campaign";
 
 import "./game.css";
 
-const Game = ({ changeClientScene }) => {
-  const [deckCards, setDeckCards] = useState([]);
+const Game = ({ clientData, gameData, leaveCampaignApp }) => {
+  const onLeaveCampaign = useCallback(() => {
+    leaveCampaignApp();
+  }, [leaveCampaignApp]);
 
   useEffect(() => {
-    setDeckCards(getNewShuffledDeck());
+    shuffleDeck(clientData, gameData);
   }, []);
 
   return (
     <div id="game">
-      <Deck deckCards={deckCards}></Deck>
+      <Deck gameData={gameData}></Deck>
       <Button
-        id="back_btn"
-        text="Back"
-        icon="arrow_back"
-        onClick={() => changeClientScene(CLIENT_SCENES.LOBBY_PREGAME)}
+        id="leave_btn"
+        // text="Leave"
+        icon="close"
+        onClick={onLeaveCampaign}
       />
     </div>
   );
 };
 
 Game.propTypes = {
-  changeClientScene: PropTypes.func.isRequired,
+  clientData: PropTypes.object.isRequired,
+  gameData: PropTypes.object.isRequired,
+  leaveCampaignApp: PropTypes.func.isRequired,
 };
 
 Game.defaultProps = {};

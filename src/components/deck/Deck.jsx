@@ -9,10 +9,10 @@ function zth(max, prcntg, intero) {
   return Math.round(x * 10) / 10;
 }
 
-const Deck = ({ deckCards }) => {
+const Deck = ({ gameData }) => {
   const deckLengthPercentage = useMemo(
-    () => (deckCards.length * 100) / 108,
-    [deckCards.length]
+    () => (gameData.deck ? (JSON.parse(gameData.deck).length * 100) / 108 : 0),
+    [gameData.deck]
   );
 
   const deckShadow = useMemo(() => {
@@ -27,7 +27,7 @@ const Deck = ({ deckCards }) => {
 };
 
 Deck.propTypes = {
-  deckCards: PropTypes.array.isRequired,
+  gameData: PropTypes.object.isRequired,
 };
 
 Deck.defaultProps = {};
