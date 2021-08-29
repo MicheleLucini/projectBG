@@ -1,4 +1,4 @@
-import { CARD_RANK, CARD_SUIT, CARD_SUIT_COLOR } from "./constants";
+import { CARD_RANK, CARD_SUIT, CARD_SUIT_COLOR, PLAYER_IDS } from "./constants";
 
 export const uuidv4 = () => {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
@@ -34,8 +34,10 @@ export const cursorYPctToPx = (y, viewport) => {
   return (y * viewport.height) / 100;
 };
 
-export const getNewShuffledDeck = (y, viewport) => {
+export const getNewShuffledDeck = () => {
   const deck = [];
+
+  var cardId = 0;
 
   Object.values(CARD_SUIT_COLOR).forEach((deckColor) => {
     deck.push({
@@ -49,7 +51,9 @@ export const getNewShuffledDeck = (y, viewport) => {
     Object.values(CARD_SUIT).forEach((suit) => {
       Object.values(CARD_RANK).forEach((rank) => {
         if (rank === CARD_RANK.JOKER) return;
+        cardId++;
         deck.push({
+          id: cardId,
           suit,
           rank,
           color: getColorFromSuit(suit),
@@ -64,7 +68,7 @@ export const getNewShuffledDeck = (y, viewport) => {
   return shuffle(deck);
 };
 
-function getColorFromSuit(suit) {
+export function getColorFromSuit(suit) {
   if (suit === CARD_SUIT.DIAMOND || suit === CARD_SUIT.HEART)
     return CARD_SUIT_COLOR.RED;
   return CARD_SUIT_COLOR.BLACK;
@@ -88,4 +92,54 @@ function shuffle(array) {
   }
 
   return array;
+}
+
+export function getColorFromPlayerId(playerId) {
+  switch (playerId) {
+    case PLAYER_IDS.blue:
+      return "blue";
+    case PLAYER_IDS.red:
+      return "red";
+    case PLAYER_IDS.green:
+      return "green";
+    case PLAYER_IDS.yellow:
+      return "yellow";
+    default:
+      return "";
+  }
+}
+
+export function getInfoFromCardRank(rank) {
+  switch (rank) {
+    case CARD_RANK.JOKER:
+      return "JOKER";
+    case CARD_RANK.KING:
+      return "K";
+    case CARD_RANK.QUEEN:
+      return "Q";
+    case CARD_RANK.JACK:
+      return "J";
+    case CARD_RANK.TEN:
+      return "10";
+    case CARD_RANK.NINE:
+      return "9";
+    case CARD_RANK.EIGHT:
+      return "8";
+    case CARD_RANK.SEVEN:
+      return "7";
+    case CARD_RANK.SIX:
+      return "6";
+    case CARD_RANK.FIVE:
+      return "5";
+    case CARD_RANK.FOUR:
+      return "4";
+    case CARD_RANK.THREE:
+      return "3";
+    case CARD_RANK.TWO:
+      return "2";
+    case CARD_RANK.ACE:
+      return "A";
+    default:
+      return "";
+  }
 }

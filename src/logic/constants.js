@@ -13,6 +13,13 @@ export const LSKEY = {
   CLIENT_DATA: "client_data",
 };
 
+export const PLAYER_IDS = {
+  blue: "playerBlue",
+  red: "playerRed",
+  green: "playerGreen",
+  yellow: "playerYellow",
+};
+
 export const CARD_SUIT_COLOR = {
   BLACK: 1,
   RED: 2,

@@ -198,9 +198,9 @@ const App = () => {
 
   // EFFETTI ##########################################
 
-  // useEffect(() => {
-  //   console.log("gameData changed: ", { ...gameData });
-  // }, [gameData]);
+  useEffect(() => {
+    console.log("gameData changed: ", { ...gameData });
+  }, [gameData]);
 
   return (
     <>

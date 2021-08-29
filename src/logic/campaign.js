@@ -6,7 +6,7 @@ import {
   dbUnsubscribe,
 } from "./database";
 import { getRandomCampaignKey, getNewShuffledDeck } from "./utility";
-import { appVersion, CLIENT_SCENES } from "./constants";
+import { appVersion, CLIENT_SCENES, PLAYER_IDS } from "./constants";
 
 // const campaign = {
 //   key: "", // chiave della campagna "AAAA"
@@ -156,7 +156,46 @@ export const shuffleDeck = async (clientData, gameData) => {
 
   console.log("Deck shuffled!");
 
-  updateCampaign(clientData.campaignKey, {
-    deck: JSON.stringify(getNewShuffledDeck()),
+  const updates = {};
+  updates.deck = getNewShuffledDeck();
+
+  Object.values(PLAYER_IDS).forEach((playerId) => {
+    updates[playerId + "_hand"] = [];
   });
+
+  for (var i = 0; i < 13; i++) {
+    Object.values(PLAYER_IDS).forEach(async (playerId) => {
+      updates[playerId + "_hand"].push(updates.deck.shift());
+    });
+  }
+
+  const updatesStringified = {};
+  for (const [key, value] of Object.entries(updates)) {
+    updatesStringified[key] = JSON.stringify(value);
+  }
+
+  updateCampaign(clientData.campaignKey, updatesStringified);
 };
+
+// export const drawCard = async (clientData, gameData, playerId) => {
+//   console.log(gameData?.deck);
+//   if (
+//     !clientData.campaignKey ||
+//     gameData?.creatorDeviceId !== clientData.deviceId ||
+//     !gameData?.deck
+//   )
+//     return;
+
+//   const deck = JSON.parse(gameData.deck);
+//   const card = deck.shift();
+//   const playerHand = JSON.parse(gameData[playerId + "_hand"]);
+//   playerHand.push(card);
+
+//   const updates = {};
+//   updates.deck = JSON.stringify(deck);
+//   updates[playerId + "_hand"] = JSON.stringify(playerHand);
+
+//   console.log(updates);
+
+//   await updateCampaign(clientData.campaignKey, updates);
+// };

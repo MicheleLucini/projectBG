@@ -1,3 +1,10 @@
+:root {
+  --card-black: #3b3f62;
+  --card-red: #c63949;
+  --card-gold: #c0a465;
+  --card-back: #dcc599;
+}
+
 body {
   margin: 0;
   padding: 0;
