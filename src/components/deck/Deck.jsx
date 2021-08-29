@@ -1,6 +1,8 @@
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 
+import CardBackFace from "../cardBackFace";
+
 import "./deck.css";
 
 function zth(max, prcntg, intero) {
@@ -10,10 +12,15 @@ function zth(max, prcntg, intero) {
 }
 
 const Deck = ({ gameData }) => {
-  const deckLengthPercentage = useMemo(
-    () => (gameData.deck ? (JSON.parse(gameData.deck).length * 100) / 108 : 0),
-    [gameData.deck]
-  );
+  const deckCards = useMemo(() => {
+    return gameData.deck ? JSON.parse(gameData.deck) : [];
+  }, [gameData.deck]);
+  const deckLengthPercentage = useMemo(() => {
+    return (deckCards?.length * 100) / 108;
+  }, [deckCards]);
+  const firsPickDeckColor = useMemo(() => {
+    return deckCards?.length > 0 ? deckCards[0].deckColor : null;
+  }, [deckCards]);
 
   const deckShadow = useMemo(() => {
     return (
@@ -23,7 +30,11 @@ const Deck = ({ gameData }) => {
     );
   }, [deckLengthPercentage]);
 
-  return <div id="deck" style={{ boxShadow: deckShadow }}></div>;
+  return (
+    <div id="deck" style={{ boxShadow: deckShadow }}>
+      <CardBackFace deckColor={firsPickDeckColor}></CardBackFace>
+    </div>
+  );
 };
 
 Deck.propTypes = {

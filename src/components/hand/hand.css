@@ -11,6 +11,7 @@
   grid-auto-columns: 42px;
   width: fit-content;
   margin: auto;
+  padding-right: 98px;
 }
 
 #playerBlueHand {
