@@ -18,9 +18,12 @@ const Menu = ({
   mergeGameData,
   addToastMessage,
 }) => {
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState(clientData.userName);
 
   const onCreateCampaign = useCallback(async () => {
+    setLoading(true);
+
     changeUserName(name);
 
     const newGame = await createCampaign(clientData);
@@ -32,6 +35,8 @@ const Menu = ({
     });
 
     changeCampaignKey(newGame.key);
+
+    setLoading(false);
 
     changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
   }, [
@@ -50,6 +55,8 @@ const Menu = ({
   }, [changeUserName, name, changeClientScene]);
 
   const onContinueCampaign = useCallback(async () => {
+    setLoading(true);
+
     changeUserName(name);
 
     const error = await joinCampaign({
@@ -57,6 +64,8 @@ const Menu = ({
       clientData,
       onCampaignChange: mergeGameData,
     });
+
+    setLoading(false);
 
     if (!error) {
       changeClientScene(CLIENT_SCENES.LOBBY_PREGAME);
@@ -78,18 +87,25 @@ const Menu = ({
 
   return (
     <div id="menu">
-      <TextInput label="Username" value={name} setValue={setName} />
+      <TextInput
+        label="Username"
+        value={name}
+        setValue={setName}
+        disabled={true}
+      />
       {clientData.campaignKey && (
         <>
           <Button
             text={"Continue campaign " + clientData.campaignKey}
             icon="navigate_next"
             onClick={onContinueCampaign}
+            disabled={loading}
           />
           <Button
             text={"Leave campaign " + clientData.campaignKey}
             icon="logout"
             onClick={onLeaveCampaign}
+            disabled={loading}
           />
         </>
       )}

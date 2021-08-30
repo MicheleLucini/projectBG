@@ -35,8 +35,14 @@
   color: #546e7a;
   /* box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%); */
 }
-.text-input > input:hover,
-.text-input > input:active {
+.text-input.disabled > input {
+  background-color: #f5f5f5;
+  color: #78909c;
+  opacity: 0.8;
+  pointer-events: none;
+}
+.text-input:not(.disabled) > input:hover,
+.text-input:not(.disabled) > input:active {
   /*box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);*/
   border-color: #cfd8dc;
 }

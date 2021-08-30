@@ -8,6 +8,7 @@ const TextInput = ({
   value,
   setValue,
   placeholder,
+  disabled,
   onKeyPressEnter,
 }) => {
   const [isActive, setIsActive] = useState(false);
@@ -33,7 +34,7 @@ const TextInput = ({
   return (
     <div
       className={
-        "text-input" + (isActive ? " active" : "") + (!!value ? " filled" : "")
+        "text-input" + (isActive ? " active" : "") + (!!value ? " filled" : "")+ (disabled ? " disabled" : "")
       }
     >
       <label>{label}</label>
@@ -47,6 +48,7 @@ const TextInput = ({
         onBlur={onBlur}
         required="required"
         onKeyPress={onKeyPress}
+        disabled={disabled ? "disabled" : false}
       />
       {/* <p>// place for errors</p> */}
     </div>
@@ -59,6 +61,7 @@ TextInput.propTypes = {
   setValue: PropTypes.func.isRequired,
   // validate: PropTypes.func,
   placeholder: PropTypes.string,
+  disabled: PropTypes.bool,
   onKeyPressEnter: PropTypes.func,
 };
 
@@ -67,6 +70,7 @@ TextInput.defaultProps = {
   value: null,
   // validate: () => {},
   placeholder: null,
+  disabled: false,
   onKeyPressEnter: null,
 };
 
