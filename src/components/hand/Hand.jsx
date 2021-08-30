@@ -34,9 +34,12 @@ const Hand = ({ playerId, clientData, gameData }) => {
   );
 
   const handCards = useMemo(() => {
-    return gameData[playerId + "_hand"]
+    const cards = gameData[playerId + "_hand"]
       ? JSON.parse(gameData[playerId + "_hand"])
       : [];
+    cards.sort((a, b) => a.suit - b.suit);
+    cards.sort((a, b) => a.rank - b.rank);
+    return cards;
   }, [gameData[playerId + "_hand"]]);
 
   const handClass = useMemo(
