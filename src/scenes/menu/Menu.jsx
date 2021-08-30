@@ -91,7 +91,7 @@ const Menu = ({
         label="Username"
         value={name}
         setValue={setName}
-        disabled={true}
+        disabled={loading}
       />
       {clientData.campaignKey && (
         <>
