@@ -2,9 +2,30 @@ import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 
 import { getColorFromPlayerId } from "../../logic/utility";
+import { PLAYER_IDS } from "../../logic/constants";
 import Card from "../card";
 
 import "./hand.css";
+
+function getHandPositionBasedOnPlayer(clientPlayerId, playerId) {
+  if (clientPlayerId === playerId) return "south";
+
+  const arr = Object.values(PLAYER_IDS);
+  const offset = arr.indexOf(clientPlayerId);
+
+  for (var i = 0; i < arr.length; i++) {
+    var index = (i + offset) % arr.length;
+    if (arr[index] !== playerId) continue;
+    switch (i) {
+      case 1:
+        return "east";
+      case 2:
+        return "north";
+      case 3:
+        return "west";
+    }
+  }
+}
 
 const Hand = ({ playerId, clientData, gameData }) => {
   const isMyHand = useMemo(
@@ -19,13 +40,27 @@ const Hand = ({ playerId, clientData, gameData }) => {
   }, [gameData[playerId + "_hand"]]);
 
   const handClass = useMemo(
-    () => ["hand", getColorFromPlayerId(playerId)].filter((x) => !!x).join(" "),
+    () =>
+      [
+        "hand",
+        getColorFromPlayerId(playerId),
+        getHandPositionBasedOnPlayer(clientData.playerId, playerId),
+      ]
+        .filter((x) => !!x)
+        .join(" "),
     [playerId]
   );
 
+  const playerName = useMemo(() => {
+    if (gameData[playerId + "_userName"])
+      return gameData[playerId + "_userName"];
+    return "Player " + getColorFromPlayerId(playerId) + " (bot)";
+  }, [playerId]);
+
   return (
-    <div id={playerId + "Hand"} className={handClass}>
+    <div className={handClass}>
       <div className="wrapper">
+        <span className="player-name">{playerName}</span>
         {handCards?.map((card, i) => (
           <Card card={card} isFlipped={isMyHand} />
         ))}
