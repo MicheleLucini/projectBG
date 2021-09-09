@@ -11,7 +11,10 @@ import "./card.css";
 
 const Card = ({ card, isFlipped }) => {
   const isAJolly = useMemo(() => card.rank === CARD_RANK.JOKER, [card.rank]);
-  const isAFigure = useMemo(() => card.rank > CARD_RANK.TEN, [card.rank]);
+  const isAFigure = useMemo(
+    () => card.rank !== CARD_RANK.JOKER && card.rank > CARD_RANK.TEN,
+    [card.rank]
+  );
   const cardColorSuit = useMemo(() => getColorFromSuit(card.suit), [card.suit]);
   const cardRankInfo = useMemo(
     () => getInfoFromCardRank(card.rank),
@@ -28,21 +31,19 @@ const Card = ({ card, isFlipped }) => {
   const onClick = useCallback(() => {}, []);
   return (
     <div id={card.id} key={card.id} className={cardClass} onClick={onClick}>
-      <div
-        className={
-          "card_front_face card_suit_color_" + cardColorSuit
-        }
-      >
-        <div className={"info" + (isAJolly ? " jolly" : "")}>
-          {cardRankInfo}
-          {cardSuit}
+      {isFlipped && (
+        <div className={"card_front_face card_suit_color_" + cardColorSuit}>
+          <div className={"info" + (isAJolly ? " jolly" : "")}>
+            {cardRankInfo}
+            {cardSuit}
+          </div>
+          <div className="figure">{isAFigure && <div></div>}</div>
+          <div className={"info" + (isAJolly ? " jolly" : "")}>
+            {cardRankInfo}
+            {cardSuit}
+          </div>
         </div>
-        <div className="figure">{isAFigure && <div></div>}</div>
-        <div className={"info" + (isAJolly ? " jolly" : "")}>
-          {cardRankInfo}
-          {cardSuit}
-        </div>
-      </div>
+      )}
 
       <CardBackFace deckColor={card.deckColor}></CardBackFace>
     </div>

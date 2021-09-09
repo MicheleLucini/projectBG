@@ -40,15 +40,20 @@ export const getNewShuffledDeck = () => {
   var cardId = 0;
 
   Object.values(CARD_SUIT_COLOR).forEach((deckColor) => {
-    deck.push({
-      rank: CARD_RANK.JOKER,
-      deckColor,
-    });
-    deck.push({
-      rank: CARD_RANK.JOKER,
-      deckColor,
-    });
+    deck.push(
+      {
+        rank: CARD_RANK.JOKER,
+        suit: CARD_SUIT.JOKER,
+        deckColor,
+      },
+      {
+        rank: CARD_RANK.JOKER,
+        suit: CARD_SUIT.JOKER,
+        deckColor,
+      }
+    );
     Object.values(CARD_SUIT).forEach((suit) => {
+      if (suit === CARD_SUIT.JOKER) return;
       Object.values(CARD_RANK).forEach((rank) => {
         if (rank === CARD_RANK.JOKER) return;
         cardId++;
@@ -111,8 +116,6 @@ export function getColorFromPlayerId(playerId) {
 
 export function getInfoFromCardRank(rank) {
   switch (rank) {
-    case CARD_RANK.JOKER:
-      return "JOKER";
     case CARD_RANK.KING:
       return "K";
     case CARD_RANK.QUEEN:

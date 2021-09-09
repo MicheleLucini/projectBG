@@ -30,6 +30,7 @@ export const CARD_SUIT = {
   HEART: 2,
   DIAMOND: 3,
   CLUB: 4,
+  JOKER: 5,
 };
 
 export const CARD_RANK = {

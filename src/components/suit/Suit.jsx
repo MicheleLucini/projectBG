@@ -36,12 +36,19 @@ const Suit = ({ type }) => {
           <div className="tail"></div>
         </div>
       )}
+      {type === CARD_SUIT.JOKER && (
+        <div className="joker">
+          <svg className="star">
+            <path d="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218" />
+          </svg>
+        </div>
+      )}
     </>
   );
 };
 
 Suit.propTypes = {
-  type: PropTypes.string.isRequired,
+  type: PropTypes.number.isRequired,
 };
 
 Suit.defaultProps = {};

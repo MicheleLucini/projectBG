@@ -96,3 +96,21 @@
   top: 7px;
   left: 1px;
 }
+
+.joker {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  border-radius: 50%;
+  border: 2px solid var(--card-gold);
+  display: grid;
+  place-items: center;
+}
+.joker .star {
+  width: 24px;
+  height: 24px;
+}
+.joker .star path {
+  fill: var(--card-gold);
+  transform: translate(-1.5%, -0.8%) scale(1.1);
+}

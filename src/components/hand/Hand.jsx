@@ -65,7 +65,7 @@ const Hand = ({ playerId, clientData, gameData }) => {
       <div className="wrapper">
         <span className="player-name">{playerName}</span>
         {handCards?.map((card, i) => (
-          <Card card={card} isFlipped={isMyHand} />
+          <Card key={i} card={card} isFlipped={isMyHand} />
         ))}
       </div>
     </div>
