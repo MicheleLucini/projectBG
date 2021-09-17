@@ -68,8 +68,6 @@ export const getNewShuffledDeck = () => {
     });
   });
 
-  console.log(deck);
-
   return shuffle(deck);
 };
 

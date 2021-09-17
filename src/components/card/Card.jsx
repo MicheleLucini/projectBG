@@ -9,7 +9,7 @@ import { CARD_RANK } from "../../logic/constants";
 
 import "./card.css";
 
-const Card = ({ card, isFlipped }) => {
+const Card = ({ card, isFlipped, isSelected, onClick }) => {
   const isAJolly = useMemo(() => card.rank === CARD_RANK.JOKER, [card.rank]);
   const isAFigure = useMemo(
     () => card.rank !== CARD_RANK.JOKER && card.rank > CARD_RANK.TEN,
@@ -24,11 +24,16 @@ const Card = ({ card, isFlipped }) => {
 
   const cardClass = useMemo(
     () =>
-      ["card", isFlipped ? "is-flipped" : null].filter((x) => !!x).join(" "),
-    [isFlipped]
+      [
+        "card",
+        isFlipped ? "is-flipped" : null,
+        isSelected ? "is-selected" : null,
+      ]
+        .filter((x) => !!x)
+        .join(" "),
+    [isFlipped, isSelected]
   );
 
-  const onClick = useCallback(() => {}, []);
   return (
     <div id={card.id} key={card.id} className={cardClass} onClick={onClick}>
       {isFlipped && (
@@ -53,10 +58,14 @@ const Card = ({ card, isFlipped }) => {
 Card.propTypes = {
   card: PropTypes.object.isRequired,
   isFlipped: PropTypes.bool,
+  isSelected: PropTypes.bool,
+  onClick: PropTypes.func,
 };
 
 Card.defaultProps = {
   isFlipped: false,
+  isSelected: false,
+  onClick: () => {},
 };
 
 export default Card;

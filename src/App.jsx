@@ -98,6 +98,21 @@ const App = () => {
     setClientData((prev) => ({ ...prev, playerId: newPlayerId }));
   }, []);
 
+  // CLIENT DATA SELECTED CARDS ##################################
+
+  const [mySelectedCards, setMySelectedCards] = useState([]);
+
+  const onMyHandCardClick = useCallback(
+    (playerId, cardId) => {
+      if (playerId !== clientData.playerId) return;
+      setMySelectedCards((prev) => {
+        if (prev.includes(cardId)) return prev.filter((x) => x !== cardId);
+        return [...prev, cardId];
+      });
+    },
+    [clientData.playerId]
+  );
+
   // CLIENT DATA CURSOR ##########################################
 
   const [clientCursor, setClientCursor] = useState({
@@ -143,8 +158,11 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    updateMyPlayer(clientData, clientCursor);
-  }, [clientData, clientCursor]);
+    updateMyPlayer(clientData, {
+      clientCursor,
+      selectedCards: mySelectedCards,
+    });
+  }, [clientData, clientCursor, mySelectedCards]);
 
   // GAME DATA ##########################################
 
@@ -198,9 +216,9 @@ const App = () => {
 
   // EFFETTI ##########################################
 
-  useEffect(() => {
-    console.log("gameData changed: ", { ...gameData });
-  }, [gameData]);
+  // useEffect(() => {
+  //   console.log("gameData changed: ", { ...gameData });
+  // }, [gameData]);
 
   return (
     <>
@@ -239,6 +257,7 @@ const App = () => {
           clientData={clientData}
           gameData={gameData}
           leaveCampaignApp={leaveCampaignApp}
+          onMyHandCardClick={onMyHandCardClick}
         />
       )}
 

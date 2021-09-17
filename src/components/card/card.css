@@ -25,6 +25,12 @@
 .card.is-flipped {
   transform: rotateY(0deg);
 }
+.card.is-selected {
+  transform: rotateY(180deg) translateY(-30px);
+}
+.card.is-flipped.is-selected {
+  transform: rotateY(0deg) translateY(-30px);
+}
 /* .card:hover {
   transform: translateY(-50px) rotateY(180deg);
 }

@@ -8,7 +8,12 @@ import { PLAYER_IDS } from "../../logic/constants";
 
 import "./game.css";
 
-const Game = ({ clientData, gameData, leaveCampaignApp }) => {
+const Game = ({
+  clientData,
+  gameData,
+  leaveCampaignApp,
+  onMyHandCardClick,
+}) => {
   const onLeaveCampaign = useCallback(() => {
     leaveCampaignApp();
   }, [leaveCampaignApp]);
@@ -24,21 +29,25 @@ const Game = ({ clientData, gameData, leaveCampaignApp }) => {
         playerId={PLAYER_IDS.blue}
         clientData={clientData}
         gameData={gameData}
+        onCardClick={onMyHandCardClick}
       ></Hand>
       <Hand
         playerId={PLAYER_IDS.red}
         clientData={clientData}
         gameData={gameData}
+        onCardClick={onMyHandCardClick}
       ></Hand>
       <Hand
         playerId={PLAYER_IDS.green}
         clientData={clientData}
         gameData={gameData}
+        onCardClick={onMyHandCardClick}
       ></Hand>
       <Hand
         playerId={PLAYER_IDS.yellow}
         clientData={clientData}
         gameData={gameData}
+        onCardClick={onMyHandCardClick}
       ></Hand>
       <Button
         id="leave_btn"

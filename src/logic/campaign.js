@@ -98,7 +98,10 @@ export const leaveCampaign = async (key, deviceId, playerId) => {
 
 /* Gestione player */
 
-export const updateMyPlayer = (clientData, clientCursor) => {
+export const updateMyPlayer = (
+  clientData,
+  { clientCursor, selectedCards } = {}
+) => {
   if (!clientData.playerId || !clientData.campaignKey) return;
 
   let myPlayerData = {};
@@ -106,16 +109,17 @@ export const updateMyPlayer = (clientData, clientCursor) => {
   myPlayerData[clientData.playerId + "_userName"] = clientData.userName;
   myPlayerData[clientData.playerId + "_clientScene"] = clientData.clientScene;
 
-  if (clientCursor && clientData.clientScene === CLIENT_SCENES.GAME) {
-    myPlayerData[clientData.playerId + "_cursorX"] = clientCursor.x;
-    myPlayerData[clientData.playerId + "_cursorY"] = clientCursor.y;
-    myPlayerData[clientData.playerId + "_cursorHide"] = clientCursor.hide;
-    myPlayerData[clientData.playerId + "_cursorText"] = clientCursor.text;
-  } else {
-    myPlayerData[clientData.playerId + "_cursorX"] = 0;
-    myPlayerData[clientData.playerId + "_cursorY"] = 0;
-    myPlayerData[clientData.playerId + "_cursorHide"] = true;
-    myPlayerData[clientData.playerId + "_cursorText"] = null;
+  if (clientData.clientScene === CLIENT_SCENES.GAME) {
+    if (clientCursor) {
+      myPlayerData[clientData.playerId + "_cursorX"] = clientCursor.x;
+      myPlayerData[clientData.playerId + "_cursorY"] = clientCursor.y;
+      myPlayerData[clientData.playerId + "_cursorHide"] = clientCursor.hide;
+      myPlayerData[clientData.playerId + "_cursorText"] = clientCursor.text;
+    }
+    if (selectedCards) {
+      myPlayerData[clientData.playerId + "_selectedCards"] =
+        JSON.stringify(selectedCards);
+    }
   }
 
   updateCampaign(clientData.campaignKey, myPlayerData);
@@ -124,14 +128,16 @@ export const updateMyPlayer = (clientData, clientCursor) => {
 export const resetMyPlayer = (key, playerId) => {
   if (!playerId || !key) return;
 
-  let myPlayerData = {};
-  myPlayerData[playerId + "_deviceId"] = null;
-  myPlayerData[playerId + "_userName"] = null;
-  myPlayerData[playerId + "_clientScene"] = null;
-  myPlayerData[playerId + "_cursorX"] = null;
-  myPlayerData[playerId + "_cursorY"] = null;
-  myPlayerData[playerId + "_cursorHide"] = null;
-  myPlayerData[playerId + "_cursorText"] = null;
+  const myPlayerData = {
+    [playerId + "_deviceId"]: null,
+    [playerId + "_userName"]: null,
+    [playerId + "_clientScene"]: null,
+    [playerId + "_cursorX"]: null,
+    [playerId + "_cursorY"]: null,
+    [playerId + "_cursorHide"]: null,
+    [playerId + "_cursorText"]: null,
+    [playerId + "_selectedCards"]: null,
+  };
 
   updateCampaign(key, myPlayerData);
 };

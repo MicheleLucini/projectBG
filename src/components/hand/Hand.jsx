@@ -27,7 +27,13 @@ function getHandPositionBasedOnPlayer(clientPlayerId, playerId) {
   }
 }
 
-const Hand = ({ playerId, clientData, gameData }) => {
+const Hand = ({ playerId, clientData, gameData, onCardClick }) => {
+  const selectedCards = useMemo(() => {
+    if (!gameData[playerId + "_selectedCards"]) return [];
+    const arr = JSON.parse(gameData[playerId + "_selectedCards"]);
+    return arr || [];
+  }, [playerId, gameData[playerId + "_selectedCards"]]);
+
   const isMyHand = useMemo(
     () => playerId === clientData.playerId,
     [playerId, clientData.playerId]
@@ -64,9 +70,18 @@ const Hand = ({ playerId, clientData, gameData }) => {
     <div className={handClass}>
       <div className="wrapper">
         <span className="player-name">{playerName}</span>
-        {handCards?.map((card, i) => (
-          <Card key={i} card={card} isFlipped={isMyHand} />
-        ))}
+        {handCards?.map((card, i) => {
+          const isSelected = selectedCards.includes(card.id);
+          return (
+            <Card
+              key={i}
+              card={card}
+              isFlipped={isMyHand}
+              isSelected={isSelected}
+              onClick={() => onCardClick(playerId, card.id)}
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -76,6 +91,7 @@ Hand.propTypes = {
   playerId: PropTypes.string.isRequired,
   clientData: PropTypes.object.isRequired,
   gameData: PropTypes.object.isRequired,
+  onCardClick: PropTypes.func.isRequired,
 };
 
 Hand.defaultProps = {};
