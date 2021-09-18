@@ -51,9 +51,10 @@ const Game = ({
       ></Hand>
       <Button
         id="leave_btn"
-        // text="Leave"
+        text="Leave"
         icon="close"
         onClick={onLeaveCampaign}
+        size="small"
       />
     </div>
   );
