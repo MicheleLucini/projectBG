@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/projectBG/static/css/main.23436ca7.chunk.css",
-    "main.js": "/projectBG/static/js/main.8a9c9454.chunk.js",
-    "main.js.map": "/projectBG/static/js/main.8a9c9454.chunk.js.map",
-    "runtime-main.js": "/projectBG/static/js/runtime-main.9c065397.js",
-    "runtime-main.js.map": "/projectBG/static/js/runtime-main.9c065397.js.map",
-    "static/js/2.24f59da6.chunk.js": "/projectBG/static/js/2.24f59da6.chunk.js",
-    "static/js/2.24f59da6.chunk.js.map": "/projectBG/static/js/2.24f59da6.chunk.js.map",
+    "main.css": "/projectBG/static/css/main.7532054d.chunk.css",
+    "main.js": "/projectBG/static/js/main.978d869d.chunk.js",
+    "main.js.map": "/projectBG/static/js/main.978d869d.chunk.js.map",
+    "runtime-main.js": "/projectBG/static/js/runtime-main.6dadc2f8.js",
+    "runtime-main.js.map": "/projectBG/static/js/runtime-main.6dadc2f8.js.map",
+    "static/js/2.ab7dd380.chunk.js": "/projectBG/static/js/2.ab7dd380.chunk.js",
+    "static/js/2.ab7dd380.chunk.js.map": "/projectBG/static/js/2.ab7dd380.chunk.js.map",
     "index.html": "/projectBG/index.html",
-    "static/css/main.23436ca7.chunk.css.map": "/projectBG/static/css/main.23436ca7.chunk.css.map",
-    "static/js/2.24f59da6.chunk.js.LICENSE.txt": "/projectBG/static/js/2.24f59da6.chunk.js.LICENSE.txt"
+    "static/css/main.7532054d.chunk.css.map": "/projectBG/static/css/main.7532054d.chunk.css.map",
+    "static/js/2.ab7dd380.chunk.js.LICENSE.txt": "/projectBG/static/js/2.ab7dd380.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.9c065397.js",
-    "static/js/2.24f59da6.chunk.js",
-    "static/css/main.23436ca7.chunk.css",
-    "static/js/main.8a9c9454.chunk.js"
+    "static/js/runtime-main.6dadc2f8.js",
+    "static/js/2.ab7dd380.chunk.js",
+    "static/css/main.7532054d.chunk.css",
+    "static/js/main.978d869d.chunk.js"
   ]
 }
